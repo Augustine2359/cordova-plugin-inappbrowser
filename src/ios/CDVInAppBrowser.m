@@ -511,7 +511,7 @@
 @interface CDVInAppBrowserViewController () {
 }
 
-@property (nonatomic, strong) UIView* statusBarBackground;
+@property (nonatomic, strong) UIToolbar* statusBarBackground;
 
 @end
 
@@ -597,10 +597,16 @@
     CGRect statusBarBackgroundFrame = toolbarFrame;
     statusBarBackgroundFrame.origin.y = 0;
     statusBarBackgroundFrame.size.height = [self getStatusBarOffset];
-    self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarBackgroundFrame];
+    self.statusBarBackground = [[UIToolbar alloc] initWithFrame:statusBarBackgroundFrame];
+    self.statusBarBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.statusBarBackground.barStyle = UIBarStyleBlackOpaque;
     self.statusBarBackground.hidden = NO;
+    self.statusBarBackground.opaque = NO;
     if (_browserOptions.toolbarcolor != nil) { // Set statusBarBackground color to match toolbarColor if user sets it in options
-        self.statusBarBackground.backgroundColor = [self colorFromHexString:_browserOptions.toolbarcolor];
+        self.statusBarBackground.barTintColor = [self colorFromHexString:_browserOptions.toolbarcolor];
+    }
+    if (!_browserOptions.toolbartranslucent) { // Set toolbar translucent to no if user sets it in options
+        self.statusBarBackground.translucent = NO;
     }
 
     self.toolbar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
