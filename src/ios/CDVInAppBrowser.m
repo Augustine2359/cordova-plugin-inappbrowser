@@ -509,8 +509,10 @@
 #pragma mark CDVInAppBrowserViewController
 
 @interface CDVInAppBrowserViewController () {
-    @property (nonatomic, strong) UIView* statusBarBackground;
 }
+
+@property (nonatomic, strong) UIView* statusBarBackground;
+
 @end
 
 @implementation CDVInAppBrowserViewController
@@ -593,7 +595,7 @@
     CGRect toolbarFrame = CGRectMake(0.0, toolbarY, self.view.bounds.size.width, TOOLBAR_HEIGHT);
 
     CGRect statusBarBackgroundFrame = toolbarFrame;
-    statusBarBackground.origin.y = 0;
+    statusBarBackgroundFrame.origin.y = 0;
     statusBarBackgroundFrame.size.height = [self getStatusBarOffset];
     self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarBackgroundFrame];
     self.statusBarBackground.hidden = NO;
