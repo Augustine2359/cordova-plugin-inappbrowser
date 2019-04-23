@@ -1094,6 +1094,7 @@
 }
 
 - (void) viewDidLoad {
+    [super viewDidLoad];
 
     CGRect statusBarFrame = [self invertFrameIfNeeded:[UIApplication sharedApplication].statusBarFrame];
     statusBarFrame.size.height = STATUSBAR_HEIGHT;
@@ -1102,8 +1103,6 @@
     self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarFrame];
     [self.statusBarBackground setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self.view addSubview:self.statusBarBackground];
-
-    [super viewDidLoad];
 }
 
 - (CGRect) invertFrameIfNeeded:(CGRect)rect {
