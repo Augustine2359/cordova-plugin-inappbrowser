@@ -594,15 +594,6 @@
     float toolbarY = toolbarIsAtBottom ? self.view.bounds.size.height - TOOLBAR_HEIGHT : 0.0;
     CGRect toolbarFrame = CGRectMake(0.0, toolbarY, self.view.bounds.size.width, TOOLBAR_HEIGHT);
 
-    CGRect statusBarBackgroundFrame = toolbarFrame;
-    statusBarBackgroundFrame.origin.y = 0;
-    statusBarBackgroundFrame.size.height = [self getStatusBarOffset];
-    self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarBackgroundFrame];
-    self.statusBarBackground.hidden = NO;
-    if (_browserOptions.toolbarcolor != nil) { // Set statusBarBackground color to match toolbarColor if user sets it in options
-        self.statusBarBackground.backgroundColor = [self colorFromHexString:_browserOptions.toolbarcolor];
-    }
-
     self.toolbar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
     self.toolbar.alpha = 1.000;
     self.toolbar.autoresizesSubviews = YES;
@@ -617,6 +608,7 @@
     self.toolbar.userInteractionEnabled = YES;
     if (_browserOptions.toolbarcolor != nil) { // Set toolbar color if user sets it in options
       self.toolbar.barTintColor = [self colorFromHexString:_browserOptions.toolbarcolor];
+      self.statusBarBackground.backgroundColor = [self colorFromHexString:_browserOptions.toolbarcolor];
     }
     if (!_browserOptions.toolbartranslucent) { // Set toolbar translucent to no if user sets it in options
       self.toolbar.translucent = NO;
@@ -678,7 +670,6 @@
     }
 
     self.view.backgroundColor = [UIColor grayColor];
-//    [self.view addSubview:self.statusBarBackground];
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
@@ -909,7 +900,7 @@
 - (void) rePositionViews {
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
         [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height + [self getStatusBarOffset])];
+        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, [self getStatusBarOffset], self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     }
 }
 
@@ -1108,10 +1099,9 @@
     statusBarFrame.size.height = STATUSBAR_HEIGHT;
     // simplified from: http://stackoverflow.com/a/25669695/219684
 
-    UIToolbar* bgToolbar = [[UIToolbar alloc] initWithFrame:statusBarFrame];
-    bgToolbar.barStyle = UIBarStyleDefault;
-    [bgToolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [self.view addSubview:bgToolbar];
+    self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarFrame];
+    [self.statusBarBackground setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [self.view addSubview:self.statusBarBackground];
 
     [super viewDidLoad];
 }
