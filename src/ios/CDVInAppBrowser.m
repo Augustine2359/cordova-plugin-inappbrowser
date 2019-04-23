@@ -508,6 +508,11 @@
 
 #pragma mark CDVInAppBrowserViewController
 
+@interface CDVInAppBrowserViewController () {
+    @property (nonatomic, strong) UIView* statusBarBackground;
+}
+@end
+
 @implementation CDVInAppBrowserViewController
 
 @synthesize currentURL;
@@ -587,6 +592,15 @@
     float toolbarY = toolbarIsAtBottom ? self.view.bounds.size.height - TOOLBAR_HEIGHT : 0.0;
     CGRect toolbarFrame = CGRectMake(0.0, toolbarY, self.view.bounds.size.width, TOOLBAR_HEIGHT);
 
+    CGRect statusBarBackgroundFrame = toolbarFrame;
+    statusBarBackground.origin.y = 0;
+    statusBarBackgroundFrame.size.height = [self getStatusBarOffset];
+    self.statusBarBackground = [[UIView alloc] initWithFrame: statusBarBackgroundFrame];
+    self.statusBarBackground.hidden = NO;
+    if (_browserOptions.toolbarcolor != nil) { // Set statusBarBackground color to match toolbarColor if user sets it in options
+        self.statusBarBackground.backgroundColor = [self colorFromHexString:_browserOptions.toolbarcolor];
+    }
+
     self.toolbar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
     self.toolbar.alpha = 1.000;
     self.toolbar.autoresizesSubviews = YES;
@@ -662,6 +676,7 @@
     }
 
     self.view.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:self.statusBarBackground];
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
@@ -814,7 +829,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)prefersStatusBarHidden {
