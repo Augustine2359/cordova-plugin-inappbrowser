@@ -678,7 +678,7 @@
     }
 
     self.view.backgroundColor = [UIColor grayColor];
-//    [self.view addSubview:self.statusBarBackground];
+    [self.view addSubview:self.statusBarBackground];
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
@@ -909,7 +909,7 @@
 - (void) rePositionViews {
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
         [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height + [self getStatusBarOffset])];
+        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, [self getStatusBarOffset], self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     }
 }
 
@@ -1100,20 +1100,6 @@
     if ( self.presentedViewController) {
         [super dismissViewControllerAnimated:flag completion:completion];
     }
-}
-
-- (void) viewDidLoad {
-
-    CGRect statusBarFrame = [self invertFrameIfNeeded:[UIApplication sharedApplication].statusBarFrame];
-    statusBarFrame.size.height = STATUSBAR_HEIGHT;
-    // simplified from: http://stackoverflow.com/a/25669695/219684
-
-    UIToolbar* bgToolbar = [[UIToolbar alloc] initWithFrame:statusBarFrame];
-    bgToolbar.barStyle = UIBarStyleDefault;
-    [bgToolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [self.view addSubview:bgToolbar];
-
-    [super viewDidLoad];
 }
 
 - (CGRect) invertFrameIfNeeded:(CGRect)rect {
