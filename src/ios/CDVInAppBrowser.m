@@ -913,10 +913,18 @@
 }
 
 - (void) rePositionViews {
+    NSString *message = [NSString stringWithFormat:@"before toolbarRect %@", NSStringFromCGRect(self.toolbar.frame)];
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
         [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height + [self getStatusBarOffset])];
     }
+
+    NSString *afterMessage = [NSString stringWithFormat:@"after toolbarRect %@", NSStringFromCGRect(self.toolbar.frame)];
+    message = [message stringByAppendingString:afterMessage];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 // Helper function to convert hex color string to UIColor
