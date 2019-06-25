@@ -924,7 +924,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 // Helper function to convert hex color string to UIColor
