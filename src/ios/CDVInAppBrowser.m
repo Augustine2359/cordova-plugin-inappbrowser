@@ -512,6 +512,7 @@
 }
 
 @property (nonatomic, strong) UIToolbar* statusBarBackground;
+@property (nonatomic) float toolbarHeight = 0;
 
 @end
 
@@ -916,7 +917,10 @@
     NSString *message = [NSString stringWithFormat:@"before toolbarRect %@", NSStringFromCGRect(self.toolbar.frame)];
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
         [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height + [self getStatusBarOffset])];
+        if (self.toolbarHeight == 0) {
+            self.toolbarHeight = self.toolbar.frame.size.height + [self getStatusBarOffset];
+        }
+        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, self.toolbarHeight)];
     }
 
     NSString *afterMessage = [NSString stringWithFormat:@"after toolbarRect %@", NSStringFromCGRect(self.toolbar.frame)];
