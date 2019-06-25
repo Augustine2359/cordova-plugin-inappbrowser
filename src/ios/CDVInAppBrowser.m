@@ -924,6 +924,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
+    [alertController addAction: defaultAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
