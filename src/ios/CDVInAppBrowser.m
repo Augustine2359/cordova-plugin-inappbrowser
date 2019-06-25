@@ -512,7 +512,7 @@
 }
 
 @property (nonatomic, strong) UIToolbar* statusBarBackground;
-@property (nonatomic) float toolbarHeight = 0;
+@property (nonatomic) float toolbarHeight;
 
 @end
 
@@ -534,6 +534,7 @@
 #endif
 
         [self createViews];
+        self.toolbarHeight = 0;
     }
 
     return self;
