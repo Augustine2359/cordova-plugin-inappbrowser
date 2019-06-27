@@ -513,7 +513,6 @@
 
 @property (nonatomic, strong) UIToolbar* statusBarBackground;
 @property (nonatomic) BOOL shouldUpdateToolbarHeight;
-@property (nonatomic, strong) NSMutableString *colorString;
 
 @end
 
@@ -536,7 +535,6 @@
 
         [self createViews];
         self.shouldUpdateToolbarHeight = YES;
-        self.colorString = [NSMutableString string];
     }
 
     return self;
@@ -903,40 +901,6 @@
     [self rePositionViews];
 
     [super viewWillAppear:animated];
-
-    [self.colorString appendFormat:@"\nviewWillAppear statusbar: %@", self.statusBarBackground.barTintColor];
-    [self.colorString appendFormat:@"\nviewWillAppear toolbar: %@", self.toolbar.barTintColor];
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    [alertController addAction: defaultAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self.colorString appendFormat:@"\nviewDidAppear statusbar: %@", self.statusBarBackground.barTintColor];
-    [self.colorString appendFormat:@"\nviewDidAppear toolbar: %@", self.toolbar.barTintColor];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    self.colorString = [NSMutableString string];
-    [self.colorString appendFormat:@"viewWillDisappear statusbar: %@", self.statusBarBackground.barTintColor];
-    [self.colorString appendFormat:@"\nviewWillDisappear toolbar: %@", self.toolbar.barTintColor];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    [self.colorString appendFormat:@"\nviewDidDisappear statusbar: %@", self.statusBarBackground.barTintColor];
-    [self.colorString appendFormat:@"\nviewDidDisappear toolbar: %@", self.toolbar.barTintColor];
 }
 
 //
