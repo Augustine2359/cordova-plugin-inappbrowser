@@ -904,6 +904,13 @@
     [self rePositionViews];
 
     [super viewWillAppear:animated];
+    
+    NSString *message = [NSString stringWithFormat:@"navigation button color %@ isWhite %@", [self colorFromHexString:_browserOptions.navigationbuttoncolor], [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[UIColor whiteColor]]];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction * action) {}];
+        [alertController addAction: defaultAction];
+        [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //
