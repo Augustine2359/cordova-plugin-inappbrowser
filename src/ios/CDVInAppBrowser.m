@@ -837,9 +837,17 @@
     [super viewDidUnload];
 }
 
+- (BOOL)isNavigationButtonColorWhite
+{
+    if (_browserOptions.navigationbuttoncolor == nil) {
+        return NO;
+    }
+    return [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[self colorFromHexString:@"#ffffff"]];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [self isNavigationButtonColorWhite] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden {
