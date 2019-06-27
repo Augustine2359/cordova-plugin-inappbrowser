@@ -842,7 +842,7 @@
     if ([[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[UIColor whiteColor]]) {
         return UIStatusBarStyleLightContent;
     }
-    return UIStatusBarStyleDarkContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden {
