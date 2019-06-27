@@ -839,7 +839,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if ([[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[UIColor whiteColor]]) {
+    if ([[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[self colorFromHexString:@"#ffffff"]]) {
         return UIStatusBarStyleLightContent;
     }
     return UIStatusBarStyleDefault;
@@ -905,7 +905,7 @@
 
     [super viewWillAppear:animated];
     
-    NSString *message = [NSString stringWithFormat:@"navigation button color %@ isWhite %d", [self colorFromHexString:_browserOptions.navigationbuttoncolor], [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[UIColor whiteColor]]];
+    NSString *message = [NSString stringWithFormat:@"navigation button color %@ isWhite %d", [self colorFromHexString:_browserOptions.navigationbuttoncolor], [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[self colorFromHexString:@"#ffffff"]]];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                                                    handler:^(UIAlertAction * action) {}];
