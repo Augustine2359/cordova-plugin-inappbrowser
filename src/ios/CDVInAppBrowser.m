@@ -512,7 +512,7 @@
 }
 
 @property (nonatomic, strong) UIToolbar* statusBarBackground;
-@property (nonatomic) BOOL shouldUpdateToolbarHeight;
+@property (nonatomic) BOOL shouldUpdateToolbarHeight; // default YES, will be set to NO after viewWillAppear
 
 @end
 
@@ -845,6 +845,7 @@
     return [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[self colorFromHexString:@"#ffffff"]];
 }
 
+// The status bar text color will be white if the navigation buttons are white, otherwise it will be black
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return [self isNavigationButtonColorWhite] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;

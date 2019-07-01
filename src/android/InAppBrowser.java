@@ -795,6 +795,7 @@ public class InAppBrowser extends CordovaPlugin {
                 edittext.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
                 edittext.setImeOptions(EditorInfo.IME_ACTION_GO);
                 edittext.setInputType(InputType.TYPE_NULL); // Will not except input... Makes the text NON-EDITABLE
+                // This causes the URL text to use the same color as the navigation buttons
                 if (navigationButtonColor != "") {
                     edittext.setTextColor(android.graphics.Color.parseColor(navigationButtonColor));
                 }
