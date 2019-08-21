@@ -1082,8 +1082,11 @@ public class InAppBrowser extends CordovaPlugin {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     cordova.getActivity().startActivity(intent);
+                    webView.loadUrl("javascript:console.log('got intent');");
+                    webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
                     return true;
                 } catch (android.content.ActivityNotFoundException e) {
+                    webView.loadUrl("javascript:console.log('not got intent');");
                     LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
                 }
             }
