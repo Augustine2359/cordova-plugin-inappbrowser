@@ -19,10 +19,10 @@
 package org.apache.cordova.inappbrowser;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ComponentInfo;
 import android.content.pm.ResolveInfo;
 import android.provider.Browser;
 import android.content.res.Resources;
