@@ -1085,17 +1085,28 @@ public class InAppBrowser extends CordovaPlugin {
 
                     final List<ResolveInfo> otherApps = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0);
                     for (ResolveInfo otherApp: otherApps) {
-                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.packageName+"');");
+                        if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
+                            ActivityInfo otherAppActivity = otherApp.activityInfo;
+                            ComponentName componentName = new ComponentName(
+                                otherAppActivity.applicationInfo.packageName,
+                                otherAppActivity.name
+                            );
+                            // make sure it does NOT open in the stack of your activity
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // task reparenting if needed
+                            intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                            // if the Google Play was already open in a search result
+                            //  this make sure it still go to the app page you requested
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            // this make sure only the Google Play app is allowed to
+                            // intercept the intent
+                            intent.setComponent(componentName);
+                            context.startActivity(intent);
+                            return true;
+                        }
                     }
 
-                    webView.loadUrl("javascript:console.log('made intent');");
-                    intent.setData(Uri.parse(url));
-                    webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
-                    webView.loadUrl("javascript:console.log('set data for intent');");
-                    cordova.getActivity().startActivity(intent);
-                    webView.loadUrl("javascript:console.log('started activity for intent');");
-                    webView.loadUrl("javascript:console.log('got intent');");
-                    return true;
+                    return false;
                 } catch (android.content.ActivityNotFoundException e) {
                     webView.loadUrl("javascript:console.log('not got intent');");
                     LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
