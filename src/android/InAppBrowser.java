@@ -1065,7 +1065,9 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+            LOG.v(url);
             if (url.startsWith(WebView.SCHEME_TEL)) {
+                LOG.v('telephone');
                 try {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse(url));
@@ -1075,6 +1077,7 @@ public class InAppBrowser extends CordovaPlugin {
                     LOG.e(LOG_TAG, "Error dialing " + url + ": " + e.toString());
                 }
             } else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:")) {
+                LOG.v('geo or mail or market or intent');
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -1086,6 +1089,7 @@ public class InAppBrowser extends CordovaPlugin {
             }
             // If sms:5551212?body=This is the message
             else if (url.startsWith("sms:")) {
+            LOG.v('sms');
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -1117,11 +1121,13 @@ public class InAppBrowser extends CordovaPlugin {
             }
             // Test for whitelisted custom scheme names like mycoolapp:// or twitteroauthresponse:// (Twitter Oauth Response)
             else if (!url.startsWith("http:") && !url.startsWith("https:") && url.matches("^[a-z]*://.*?$")) {
+            LOG.v('some custom scheme');
                 if (allowedSchemes == null) {
                     String allowed = preferences.getString("AllowedSchemes", "");
                     allowedSchemes = allowed.split(",");
                 }
                 if (allowedSchemes != null) {
+            LOG.v(allowedSchemes);
                     for (String scheme : allowedSchemes) {
                         if (url.startsWith(scheme)) {
                             try {
