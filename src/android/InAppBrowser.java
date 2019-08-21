@@ -1079,9 +1079,13 @@ public class InAppBrowser extends CordovaPlugin {
             } else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:")) {
                 webView.loadUrl("javascript:console.log('geo or mail or market or intent');");
                 try {
+                    webView.loadUrl("javascript:console.log('trying to make intent');");
                     Intent intent = new Intent(Intent.ACTION_VIEW);
+                    webView.loadUrl("javascript:console.log('made intent');");
                     intent.setData(Uri.parse(url));
+                    webView.loadUrl("javascript:console.log('set data for intent');");
                     cordova.getActivity().startActivity(intent);
+                    webView.loadUrl("javascript:console.log('started activity for intent');");
                     webView.loadUrl("javascript:console.log('got intent');");
                     webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
                     return true;
