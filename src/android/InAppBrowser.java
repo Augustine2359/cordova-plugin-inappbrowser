@@ -1065,9 +1065,9 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-            LOG.v(LOG_TAG, url);
+            webView.loadUrl("javascript:console.log('"+url+"');");
             if (url.startsWith(WebView.SCHEME_TEL)) {
-                LOG.v(LOG_TAG, "telephone");
+                webView.loadUrl("javascript:console.log('telephone');");
                 try {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse(url));
@@ -1077,7 +1077,7 @@ public class InAppBrowser extends CordovaPlugin {
                     LOG.e(LOG_TAG, "Error dialing " + url + ": " + e.toString());
                 }
             } else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:")) {
-                LOG.v(LOG_TAG, "geo or mail or market or intent");
+                webView.loadUrl("javascript:console.log('geo or mail or market or intent');");
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -1089,7 +1089,7 @@ public class InAppBrowser extends CordovaPlugin {
             }
             // If sms:5551212?body=This is the message
             else if (url.startsWith("sms:")) {
-            LOG.v(LOG_TAG, "sms");
+                webView.loadUrl("javascript:console.log('sms');");
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -1121,14 +1121,14 @@ public class InAppBrowser extends CordovaPlugin {
             }
             // Test for whitelisted custom scheme names like mycoolapp:// or twitteroauthresponse:// (Twitter Oauth Response)
             else if (!url.startsWith("http:") && !url.startsWith("https:") && url.matches("^[a-z]*://.*?$")) {
-            LOG.v(LOG_TAG, "some custom scheme");
+                webView.loadUrl("javascript:console.log('some custom scheme');");
                 if (allowedSchemes == null) {
                     String allowed = preferences.getString("AllowedSchemes", "");
                     allowedSchemes = allowed.split(",");
                 }
                 if (allowedSchemes != null) {
                     for (String scheme : allowedSchemes) {
-            LOG.v(LOG_TAG, scheme);
+                        webView.loadUrl("javascript:console.log('"+scheme+"');");
                         if (url.startsWith(scheme)) {
                             try {
                                 JSONObject obj = new JSONObject();
