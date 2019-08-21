@@ -1081,6 +1081,12 @@ public class InAppBrowser extends CordovaPlugin {
                 try {
                     webView.loadUrl("javascript:console.log('trying to make intent');");
                     Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                    final List<ResolveInfo> otherApps = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0);
+                    for (ResolveInfo otherApp: otherApps) {
+                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.packageName+"');");
+                    }
+
                     webView.loadUrl("javascript:console.log('made intent');");
                     intent.setData(Uri.parse(url));
                     webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
