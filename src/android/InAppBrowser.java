@@ -21,6 +21,8 @@ package org.apache.cordova.inappbrowser;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ComponentInfo;
 import android.content.pm.ResolveInfo;
 import android.provider.Browser;
 import android.content.res.Resources;
@@ -1101,7 +1103,7 @@ public class InAppBrowser extends CordovaPlugin {
                             // this make sure only the Google Play app is allowed to
                             // intercept the intent
                             intent.setComponent(componentName);
-                            context.startActivity(intent);
+                            cordova.getActivity().startActivity(intent);
                             return true;
                         }
                     }
