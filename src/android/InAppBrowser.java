@@ -1121,6 +1121,8 @@ public class InAppBrowser extends CordovaPlugin {
                 } catch (android.content.ActivityNotFoundException e) {
                     webView.loadUrl("javascript:console.log('not got intent');");
                     LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
+                } catch (Error error) {
+                            webView.loadUrl("javascript:console.log('"+error+"');");
                 }
             }
             // If sms:5551212?body=This is the message
