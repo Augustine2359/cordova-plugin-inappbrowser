@@ -1087,31 +1087,34 @@ public class InAppBrowser extends CordovaPlugin {
 
                     final List<ResolveInfo> otherApps = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0);
                     for (ResolveInfo otherApp: otherApps) {
-                        webView.loadUrl("javascript:console.log('NEXT ACTIVITY');");
-                        webView.loadUrl("javascript:console.log('"+otherApp.toString()+"');");
-                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.toString()+"');");
-                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.toString()+"');");
-                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.packageName+"');");
-                        webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.name+"');");
-                        // if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
-                        //     ActivityInfo otherAppActivity = otherApp.activityInfo;
-                        //     ComponentName componentName = new ComponentName(
-                        //         otherAppActivity.applicationInfo.packageName,
-                        //         otherAppActivity.name
-                        //     );
-                        //     // make sure it does NOT open in the stack of your activity
-                        //     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //     // task reparenting if needed
-                        //     intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                        //     // if the Google Play was already open in a search result
-                        //     //  this make sure it still go to the app page you requested
-                        //     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        //     // this make sure only the Google Play app is allowed to
-                        //     // intercept the intent
-                        //     intent.setComponent(componentName);
-                        //     cordova.getActivity().startActivity(intent);
-                        //     return true;
-                        // }
+                        // webView.loadUrl("javascript:console.log('NEXT ACTIVITY');");
+                        // webView.loadUrl("javascript:console.log('"+otherApp.toString()+"');");
+                        // webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.toString()+"');");
+                        // webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.toString()+"');");
+                        // webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.applicationInfo.packageName+"');");
+                        // webView.loadUrl("javascript:console.log('"+otherApp.activityInfo.name+"');");
+                        if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
+                            ActivityInfo otherAppActivity = otherApp.activityInfo;
+                            ComponentName componentName = new ComponentName(
+                                otherAppActivity.applicationInfo.packageName,
+                                otherAppActivity.name
+                            );
+                            // make sure it does NOT open in the stack of your activity
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // task reparenting if needed
+                            intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                            // if the Google Play was already open in a search result
+                            //  this make sure it still go to the app page you requested
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            // this make sure only the Google Play app is allowed to
+                            // intercept the intent
+                            intent.setComponent(componentName);
+                            intent.setData(Uri.parse(url));
+                            webView.loadUrl("javascript:console.log('"+url+"');");
+                            webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
+                            cordova.getActivity().startActivity(intent);
+                            return true;
+                        }
                     }
 
                     return false;
