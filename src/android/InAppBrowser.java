@@ -1108,7 +1108,7 @@ public class InAppBrowser extends CordovaPlugin {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             // this make sure only the Google Play app is allowed to
                             // intercept the intent
-                            intent.setComponent(componentName);
+                            // intent.setComponent(componentName);
                             intent.setData(Uri.parse(url));
                             webView.loadUrl("javascript:console.log('"+url+"');");
                             webView.loadUrl("javascript:console.log('"+Uri.parse(url)+"');");
