@@ -894,6 +894,12 @@
     NSLog(@"%@", inlineAllowed);
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"console.log('%@')", inlineAllowed]];
 
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:inlineAllowed preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+
+    [alertController addAction: defaultAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+
     if (_userAgentLockToken != 0) {
         [self.webView loadRequest:request];
     } else {
