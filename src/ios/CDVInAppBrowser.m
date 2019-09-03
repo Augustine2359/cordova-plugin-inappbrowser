@@ -203,7 +203,17 @@
     // UIWebView options
     self.inAppBrowserViewController.webView.scalesPageToFit = browserOptions.enableviewportscale;
     self.inAppBrowserViewController.webView.mediaPlaybackRequiresUserAction = browserOptions.mediaplaybackrequiresuseraction;
+    NSLog(@"loading");
+    [self.inAppBrowserViewController.webView stringByEvaluatingJavaScriptFromString:@"console.log('loading')"];
+    NSString *optionString = [NSString stringWithFormat:@"%d", browserOptions.allowinlinemediaplayback];
+    NSLog(@"%@", optionString);
+    [self.inAppBrowserViewController.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"console.log('%@')", optionString]];
     self.inAppBrowserViewController.webView.allowsInlineMediaPlayback = browserOptions.allowinlinemediaplayback;
+
+    NSString *inlineAllowed = [NSString stringWithFormat:@"%d", self.inAppBrowserViewController.webView.allowsInlineMediaPlayback];
+    NSLog(@"%@", inlineAllowed);
+    [self.inAppBrowserViewController.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"console.log('%@')", inlineAllowed]];
+
     if (IsAtLeastiOSVersion(@"6.0")) {
         self.inAppBrowserViewController.webView.keyboardDisplayRequiresUserAction = browserOptions.keyboarddisplayrequiresuseraction;
         self.inAppBrowserViewController.webView.suppressesIncrementalRendering = browserOptions.suppressesincrementalrendering;
@@ -879,6 +889,10 @@
 - (void)navigateTo:(NSURL*)url
 {
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
+
+    NSString *inlineAllowed = [NSString stringWithFormat:@"%d", self.webView.allowsInlineMediaPlayback];
+    NSLog(@"%@", inlineAllowed);
+    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"console.log('%@')", inlineAllowed]];
 
     if (_userAgentLockToken != 0) {
         [self.webView loadRequest:request];
