@@ -960,7 +960,8 @@
         }
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, 0)];
 
-    NSString *message = [NSString stringWithFormat:@"toolbar frame %@", NSStringFromCGRect(self.toolbar.frame)];
+    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+    NSString *message = [NSString stringWithFormat:@"width %f height %f", statusBarFrame.size.width, statusBarFrame.size.height];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
