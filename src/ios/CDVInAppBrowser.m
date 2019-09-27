@@ -706,8 +706,7 @@
     NSLog(@"Setting the WebView's frame to %@", NSStringFromCGRect(frame));
     [self.webView setFrame:frame];
 
-        NSString *afterMessage = [NSString stringWithFormat:@"setWebViewFrame %@", NSStringFromCGRect(frame)];
-    message = [message stringByAppendingString:afterMessage];
+    NSString *message = [NSString stringWithFormat:@"setWebViewFrame %@", NSStringFromCGRect(frame)];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
@@ -961,8 +960,7 @@
         }
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, toolbarHeight)];
 
-    NSString *afterMessage = [NSString stringWithFormat:@"webView frame %@", NSStringFromCGRect(self.webView.frame)];
-    message = [message stringByAppendingString:afterMessage];
+    NSString *message = [NSString stringWithFormat:@"webView frame %@", NSStringFromCGRect(self.webView.frame)];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
