@@ -961,6 +961,7 @@
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, 0)];
 
     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+    self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     NSString *message = [NSString stringWithFormat:@"webview inset %@", NSStringFromUIEdgeInsets(self.webView.scrollView.contentInset)];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
