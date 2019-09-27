@@ -961,7 +961,7 @@
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, 0)];
 
     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    NSString *message = [NSString stringWithFormat:@"webview frame %@", NSStringFromCGRect(self.webView.frame))];
+    NSString *message = [NSString stringWithFormat:@"webview frame %@", NSStringFromCGRect(self.webView.frame)];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
