@@ -952,7 +952,7 @@
 
 - (void) rePositionViews {
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
-        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
+        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, 0, self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
         float toolbarHeight = self.toolbar.frame.size.height;
         if (self.shouldUpdateToolbarHeight) {
             toolbarHeight += [self getStatusBarOffset];
