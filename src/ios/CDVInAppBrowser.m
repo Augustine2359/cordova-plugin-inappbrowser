@@ -952,7 +952,7 @@
 
 - (void) rePositionViews {
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
-        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
+        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT, self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
         float toolbarHeight = self.toolbar.frame.size.height;
         if (self.shouldUpdateToolbarHeight) {
             toolbarHeight += [self getStatusBarOffset];
@@ -961,7 +961,7 @@
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, 0)];
 
     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    NSString *message = [NSString stringWithFormat:@"is more than ios7 %d", IsAtLeastiOSVersion(@"7.0")];
+    NSString *message = [NSString stringWithFormat:@"webview frame %@", NSStringFromCGRect(self.webView.frame))];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
