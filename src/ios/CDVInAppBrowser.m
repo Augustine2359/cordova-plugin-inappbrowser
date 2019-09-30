@@ -932,6 +932,7 @@
             self.shouldUpdateToolbarHeight = NO;
         }
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, toolbarHeight)];
+        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     }
 }
 
