@@ -1156,9 +1156,10 @@ BOOL isExiting = FALSE;
     lastReducedStatusBarHeight = statusBarHeight;
     
     if ((_browserOptions.toolbar) && ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop])) {
+        viewBounds = CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset]);
         // [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height)];
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(self.webView.frame)]];
+        // [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height)];
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(viewBounds)]];
     
         float toolbarHeight = self.toolbar.frame.size.height;
         if (self.shouldUpdateToolbarHeight) {
@@ -1174,7 +1175,7 @@ BOOL isExiting = FALSE;
                                                           [alertController addAction: defaultAction];
     [self presentViewController:alertController animated:YES completion:nil];
 
-        // self.webView.scrollView.contentInset = UIEdgeInsetsZero;
+        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     }
     
     self.webView.frame = viewBounds;
