@@ -1156,12 +1156,9 @@ BOOL isExiting = FALSE;
     lastReducedStatusBarHeight = statusBarHeight;
     
     if ((_browserOptions.toolbar) && ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop])) {
-        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
+        // [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
+        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height)];
         message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(self.webView.frame)]];
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    [self presentViewController:alertController animated:YES completion:nil];
     
         float toolbarHeight = self.toolbar.frame.size.height;
         if (self.shouldUpdateToolbarHeight) {
@@ -1169,7 +1166,15 @@ BOOL isExiting = FALSE;
             self.shouldUpdateToolbarHeight = NO;
         }
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, toolbarHeight)];
-        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"content inset %@", NSStringFromUIEdgeInsets(self.webView.scrollView.contentInset)]];
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+                                                          [alertController addAction: defaultAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+
+        // self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     }
     
     self.webView.frame = viewBounds;
