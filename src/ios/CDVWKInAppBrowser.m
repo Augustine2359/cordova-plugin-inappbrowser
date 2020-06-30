@@ -1157,7 +1157,7 @@ BOOL isExiting = FALSE;
     
     if ((_browserOptions.toolbar) && ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop])) {
         [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(self.webView.frame)]];
+        // message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(self.webView.frame)]];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
