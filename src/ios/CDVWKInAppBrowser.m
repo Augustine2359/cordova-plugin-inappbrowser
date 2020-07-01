@@ -1142,7 +1142,6 @@ BOOL isExiting = FALSE;
 }
 
 - (void) rePositionViews {
-    NSString *message = [NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect([self.webView bounds])];
     CGRect viewBounds = [self.webView bounds];
     CGFloat statusBarHeight = [self getStatusBarOffset];
     
@@ -1152,29 +1151,17 @@ BOOL isExiting = FALSE;
     
     // account for web view height portion that may have been reduced by a previous call to this method
     viewBounds.size.height = viewBounds.size.height - statusBarHeight + lastReducedStatusBarHeight;
-    message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect([self.webView bounds])]];
     lastReducedStatusBarHeight = statusBarHeight;
     
     if ((_browserOptions.toolbar) && ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop])) {
         viewBounds = CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset]);
-        // [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-        // [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height)];
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"viewBounds %@", NSStringFromCGRect(viewBounds)]];
-    
+
         float toolbarHeight = self.toolbar.frame.size.height;
         if (self.shouldUpdateToolbarHeight) {
             toolbarHeight += [self getStatusBarOffset];
             self.shouldUpdateToolbarHeight = NO;
         }
         [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, toolbarHeight)];
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"content inset %@", NSStringFromUIEdgeInsets(self.webView.scrollView.contentInset)]];
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"repositionViews" message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-                                                          [alertController addAction: defaultAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-
         self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     }
     
