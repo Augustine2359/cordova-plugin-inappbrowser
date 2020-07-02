@@ -82,6 +82,9 @@
 @property (nonatomic, weak) CDVUIInAppBrowser* navigationDelegate;
 @property (nonatomic) NSURL* currentURL;
 
+@property (nonatomic, strong) UIToolbar* statusBarBackground;
+@property (nonatomic) BOOL shouldUpdateToolbarHeight; //default YES, will be set to NO after viewWillAppear
+
 - (void)close;
 - (void)navigateTo:(NSURL*)url;
 - (void)showLocationBar:(BOOL)show;
