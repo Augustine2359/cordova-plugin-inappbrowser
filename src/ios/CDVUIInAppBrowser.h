@@ -17,25 +17,31 @@
  under the License.
  */
 
+#if !WK_WEB_VIEW_ONLY
+
 #import <Cordova/CDVPlugin.h>
 #import <Cordova/CDVInvokedUrlCommand.h>
 #import <Cordova/CDVScreenOrientationDelegate.h>
-#import "CDVWKInAppBrowserUIDelegate.h"
 #import "CDVInAppBrowserOptions.h"
 #import "CDVInAppBrowserNavigationController.h"
 
-@class CDVWKInAppBrowserViewController;
+#ifdef __CORDOVA_4_0_0
+    #import <Cordova/CDVUIWebViewDelegate.h>
+#else
+    #import <Cordova/CDVWebViewDelegate.h>
+#endif
 
-@interface CDVWKInAppBrowser : CDVPlugin {
-    UIWindow * tmpWindow;
+@class CDVUIInAppBrowserViewController;
 
-    @private
-    NSString* _beforeload;
-    BOOL _waitForBeforeload;
+@interface CDVUIInAppBrowser : CDVPlugin {
+  UIWindow * tmpWindow;
+
+  @private
+  NSString* _beforeload;
+  BOOL _waitForBeforeload;
 }
 
-@property (nonatomic, retain) CDVWKInAppBrowser* instance;
-@property (nonatomic, retain) CDVWKInAppBrowserViewController* inAppBrowserViewController;
+@property (nonatomic, retain) CDVUIInAppBrowserViewController* inAppBrowserViewController;
 @property (nonatomic, copy) NSString* callbackId;
 @property (nonatomic, copy) NSRegularExpression *callbackIdPattern;
 
@@ -49,30 +55,32 @@
 
 @end
 
-@interface CDVWKInAppBrowserViewController : UIViewController <CDVScreenOrientationDelegate,WKNavigationDelegate,WKUIDelegate,WKScriptMessageHandler>{
+@interface CDVUIInAppBrowserViewController : UIViewController <UIWebViewDelegate, CDVScreenOrientationDelegate>{
     @private
     NSString* _userAgent;
     NSString* _prevUserAgent;
     NSInteger _userAgentLockToken;
     CDVInAppBrowserOptions *_browserOptions;
+
+#ifdef __CORDOVA_4_0_0
+    CDVUIWebViewDelegate* _webViewDelegate;
+#else
+    CDVWebViewDelegate* _webViewDelegate;
+#endif
+
 }
 
-@property (nonatomic, strong) IBOutlet WKWebView* webView;
-@property (nonatomic, strong) IBOutlet WKWebViewConfiguration* configuration;
+@property (nonatomic, strong) IBOutlet UIWebView* webView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem* closeButton;
 @property (nonatomic, strong) IBOutlet UILabel* addressLabel;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem* backButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem* forwardButton;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* spinner;
 @property (nonatomic, strong) IBOutlet UIToolbar* toolbar;
-@property (nonatomic, strong) IBOutlet CDVWKInAppBrowserUIDelegate* webViewUIDelegate;
 
 @property (nonatomic, weak) id <CDVScreenOrientationDelegate> orientationDelegate;
-@property (nonatomic, weak) CDVWKInAppBrowser* navigationDelegate;
+@property (nonatomic, weak) CDVUIInAppBrowser* navigationDelegate;
 @property (nonatomic) NSURL* currentURL;
-
-@property (nonatomic, strong) UIToolbar* statusBarBackground;
-@property (nonatomic) BOOL shouldUpdateToolbarHeight; //default YES, will be set to NO after viewWillAppear
 
 - (void)close;
 - (void)navigateTo:(NSURL*)url;
@@ -83,3 +91,5 @@
 - (id)initWithUserAgent:(NSString*)userAgent prevUserAgent:(NSString*)prevUserAgent browserOptions: (CDVInAppBrowserOptions*) browserOptions;
 
 @end
+
+#endif
