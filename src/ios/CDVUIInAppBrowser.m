@@ -66,11 +66,28 @@ static CDVUIInAppBrowser* instance = nil;
 
 - (void)onReset
 {
+        NSLog(@"IAMTESTING reset");
+        NSLog(@"IAMTESTING %@", [NSThread callStackSymbols]);
+    NSString *message = [NSString stringWithFormat:@"reset"];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Reset" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+                                                          [alertController addAction: defaultAction];
+    // [self.inAppBrowserViewController presentViewController:alertController animated:YES completion:nil];
     [self close:nil];
 }
 
 - (void)close:(CDVInvokedUrlCommand*)command
 {
+            NSLog(@"IAMTESTING close with command");
+        NSLog(@"IAMTESTING %@", command);
+        NSLog(@"IAMTESTING %@", [NSThread callStackSymbols]);
+    NSString *message = [NSString stringWithFormat:@"close with command"];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Close" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    [alertController addAction: defaultAction];
+    // [self.inAppBrowserViewController presentViewController:alertController animated:YES completion:nil];
     if (self.inAppBrowserViewController == nil) {
         NSLog(@"IAB.close() called but it was already closed.");
         return;
@@ -274,6 +291,17 @@ static CDVUIInAppBrowser* instance = nil;
 
 - (void)hide:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"IAMTESTING hide with command");
+            NSLog(@"IAMTESTING %@", command);
+        NSLog(@"IAMTESTING %@", [NSThread callStackSymbols]);
+
+    NSString *message = [NSString stringWithFormat:@"hide with command"];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hide" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+                                                          [alertController addAction: defaultAction];
+    // [self.inAppBrowserViewController presentViewController:alertController animated:YES completion:nil];
+
     if (self.inAppBrowserViewController == nil) {
         NSLog(@"Tried to hide IAB after it was closed.");
         return;
@@ -593,6 +621,8 @@ static CDVUIInAppBrowser* instance = nil;
 
 - (void)browserExit
 {
+            NSLog(@"browserexit");
+
     if (self.callbackId != nil) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                       messageAsDictionary:@{@"type":@"exit"}];
@@ -965,6 +995,13 @@ static CDVUIInAppBrowser* instance = nil;
 
 - (void)close
 {
+    NSString *message = [NSString stringWithFormat:@"close no command"];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Close" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+                                                          [alertController addAction: defaultAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+
     [CDVUserAgentUtil releaseLock:&_userAgentLockToken];
     self.currentURL = nil;
 
