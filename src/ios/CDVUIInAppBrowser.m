@@ -636,7 +636,6 @@ static CDVUIInAppBrowser* instance = nil;
 #endif
 
         [self createViews];
-        self.shouldUpdateToolbarHeight = YES;
     }
 
     return self;
@@ -697,21 +696,6 @@ static CDVUIInAppBrowser* instance = nil;
 
     float toolbarY = toolbarIsAtBottom ? self.view.bounds.size.height - TOOLBAR_HEIGHT : 0.0;
     CGRect toolbarFrame = CGRectMake(0.0, toolbarY, self.view.bounds.size.width, TOOLBAR_HEIGHT);
-
-    CGRect statusBarBackgroundFrame = toolbarFrame;
-    statusBarBackgroundFrame.origin.y = 0;
-    statusBarBackgroundFrame.size.height = [self getStatusBarOffset];
-    self.statusBarBackground = [[UIToolbar alloc] initWithFrame:statusBarBackgroundFrame];
-    self.statusBarBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.statusBarBackground.barStyle = UIBarStyleBlackOpaque;
-    self.statusBarBackground.hidden = NO;
-    self.statusBarBackground.opaque = NO;
-    if (_browserOptions.toolbarcolor != nil) { // Set statusBarBackground color to match toolbarColor if user sets it in options
-        self.statusBarBackground.barTintColor = [self colorFromHexString:_browserOptions.toolbarcolor];
-    }
-    if (!_browserOptions.toolbartranslucent) { // Set toolbar translucent to no if user sets it in options
-        self.statusBarBackground.translucent = NO;
-    }
 
     self.toolbar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
     self.toolbar.alpha = 1.000;
@@ -794,7 +778,6 @@ static CDVUIInAppBrowser* instance = nil;
     }
 
     self.view.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:self.statusBarBackground];
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
@@ -945,18 +928,9 @@ static CDVUIInAppBrowser* instance = nil;
     [super viewDidUnload];
 }
 
-- (BOOL)isNavigationButtonColorWhite
-{
-    if (_browserOptions.navigationbuttoncolor == nil) {
-        return NO;
-    }
-    return [[self colorFromHexString:_browserOptions.navigationbuttoncolor] isEqual:[self colorFromHexString:@"#ffffff"]];
-}
-
-// The status bar text color will be white if the navigation buttons are white, otherwise it will be black
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self isNavigationButtonColorWhite] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -1037,15 +1011,8 @@ static CDVUIInAppBrowser* instance = nil;
 
 - (void) rePositionViews {
     if ([_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop]) {
-        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT + [self getStatusBarOffset], self.webView.frame.size.width, self.webView.frame.size.height - [self getStatusBarOffset])];
-
-        float toolbarHeight = self.toolbar.frame.size.height;
-        if (self.shouldUpdateToolbarHeight) {
-            toolbarHeight += [self getStatusBarOffset];
-            self.shouldUpdateToolbarHeight = NO;
-        }
-        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, 0, self.toolbar.frame.size.width, toolbarHeight)];
-        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
+        [self.webView setFrame:CGRectMake(self.webView.frame.origin.x, TOOLBAR_HEIGHT, self.webView.frame.size.width, self.webView.frame.size.height)];
+        [self.toolbar setFrame:CGRectMake(self.toolbar.frame.origin.x, [self getStatusBarOffset], self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     }
 }
 
