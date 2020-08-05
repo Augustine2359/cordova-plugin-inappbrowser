@@ -64,11 +64,19 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)onReset
 {
+        NSLog(@"IAMTESTING RESET");
+
     [self close:nil];
 }
 
 - (void)close:(CDVInvokedUrlCommand*)command
 {
+        NSLog(@"IAMTESTING CLOSE WITH COMMAND");
+  NSLog(@"IAMTESTING %@", [command arguments]);
+  NSLog(@"IAMTESTING %@", [command callbackId]);
+  NSLog(@"IAMTESTING %@", [command className]);
+  NSLog(@"IAMTESTING %@", [command methodName]);
+
     if (self.inAppBrowserViewController == nil) {
         NSLog(@"IAB.close() called but it was already closed.");
         return;
@@ -320,6 +328,12 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)hide:(CDVInvokedUrlCommand*)command
 {
+        NSLog(@"IAMTESTING HIDE WITH COMMAND");
+  NSLog(@"IAMTESTING %@", [command arguments]);
+  NSLog(@"IAMTESTING %@", [command callbackId]);
+  NSLog(@"IAMTESTING %@", [command className]);
+  NSLog(@"IAMTESTING %@", [command methodName]);
+
     // Set tmpWindow to hidden to make main webview responsive to touch again
     // https://stackoverflow.com/questions/4544489/how-to-remove-a-uiwindow
     self->tmpWindow.hidden = YES;
@@ -654,6 +668,8 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)browserExit
 {
+        NSLog(@"IAMTESTING BROWSER EXIT");
+
     if (self.callbackId != nil) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                       messageAsDictionary:@{@"type":@"exit"}];
@@ -1061,13 +1077,26 @@ BOOL isExiting = FALSE;
     [super viewDidLoad];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+        NSLog(@"IAMTESTING viewWillDisappear");
+
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    NSLog(@"IAMTESTING viewDidDisappear");
+    NSLog(@"IAMTESTING %d", isExiting);
+    NSLog(@"IAMTESTING self navigation delegate is %@", self.navigationDelegate);
     if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+        NSLog(@"navigation delegate will browser exit");
         [self.navigationDelegate browserExit];
         isExiting = FALSE;
+        return;
     }
+    NSLog(@"IAMTESTING navigation delegate did not browser exit");
 }
 
 - (BOOL)isNavigationButtonColorWhite
@@ -1090,17 +1119,54 @@ BOOL isExiting = FALSE;
 
 - (void)close
 {
+        NSLog(@"IAMTESTING CLOSE NO COMMAND");
+
     self.currentURL = nil;
-    
+
+    // if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+    //     [self.navigationDelegate browserExit];
+    // }
+
     __weak UIViewController* weakSelf = self;
-    
+    __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
+
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
         if ([weakSelf respondsToSelector:@selector(presentingViewController)]) {
-            [[weakSelf presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+            NSLog(@"IAMTESTING I HAVE PRESENTINGVIEWCONTROLLER");
+            [weakSelf dismissViewControllerAnimated:YES completion:^{
+                NSLog(@"IAMTESTING exit");
+                // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
+                // if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+                //     NSLog(@"IAMTESTING navigation delegate will browser exit");
+                    [weakNavigationDelegate browserExit];
+                //     isExiting = FALSE;
+                //     return;
+                // }
+                // NSLog(@"IAMTESTING navigation delegate did not browser exit");
+            }];
+            if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+                // [self.navigationDelegate browserExit];
+            }
+                // NSLog(@"IAMTESTING Don't know if I dismissed");
         } else {
-            [[weakSelf parentViewController] dismissViewControllerAnimated:YES completion:nil];
+            NSLog(@"IAMTESTING I NO PRESENTINGVIEWCONTROLLER BUT HAVE PARENTVIEWCONTROLLER");
+
+            [[weakSelf parentViewController] dismissViewControllerAnimated:YES completion:^{
+                // NSLog(@"IAMTESTING %d", isExiting);
+                // NSLog(@"IAMTESTING self navigation delegate is %@", self.navigationDelegate);
+                // if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+                //     NSLog(@"navigation delegate will browser exit");
+                //     [self.navigationDelegate browserExit];
+                //     isExiting = FALSE;
+                //     return;
+                // }
+                NSLog(@"IAMTESTING navigation delegate did not browser exit");
+            }];
+            if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+                [self.navigationDelegate browserExit];
+            }
         }
     });
 }
