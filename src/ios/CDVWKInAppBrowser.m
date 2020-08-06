@@ -1127,7 +1127,7 @@ BOOL isExiting = FALSE;
     //     [self.navigationDelegate browserExit];
     // }
 
-    __weak UIViewController* weakSelf = self;
+    __weak CDVWKInAppBrowserViewController* weakSelf = self;
     __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
 
     // Run later to avoid the "took a long time" log message.
@@ -1135,15 +1135,18 @@ BOOL isExiting = FALSE;
         isExiting = TRUE;
         if ([weakSelf respondsToSelector:@selector(presentingViewController)]) {
             NSLog(@"IAMTESTING I HAVE PRESENTINGVIEWCONTROLLER");
-            [weakSelf dismissViewControllerAnimated:YES completion:^{
-                NSLog(@"IAMTESTING exit");
+            NSLog(@"IAMTESTING MY PRESENTER IS %@", [weakSelf presentingViewController]);
+            [[weakSelf presentingViewController] dismissViewControllerAnimated:YES completion:^{
+                NSLog(@"IAMTESTING dismissViewControllerAnimatedComplete");
+                NSLog(@"IAMTESTING %d", isExiting);
+                NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
                 // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
-                // if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+                if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
                 //     NSLog(@"IAMTESTING navigation delegate will browser exit");
                     [weakNavigationDelegate browserExit];
-                //     isExiting = FALSE;
+                    isExiting = FALSE;
                 //     return;
-                // }
+                }
                 // NSLog(@"IAMTESTING navigation delegate did not browser exit");
             }];
             if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
