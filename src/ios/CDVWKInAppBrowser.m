@@ -1198,15 +1198,15 @@ BOOL isExiting = FALSE;
     NSLog(@"IAMTESTING  %@", [theWebView URL]);
 }
 
-- (void)webView:(WKWebView *)webView
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    NSLog(@"IAMTESTING  didReceiveAuthenticationChallenge");
-    NSLog(@"IAMTESTING  %@", challenge);
-    NSLog(@"IAMTESTING  %@", [challenge error]);
-    NSLog(@"IAMTESTING  %@", [challenge protectionSpace]);
-    NSLog(@"IAMTESTING  %@", [challenge sender]);
-}
+//- (void)webView:(WKWebView *)webView
+//didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+//completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+//    NSLog(@"IAMTESTING  didReceiveAuthenticationChallenge");
+//    NSLog(@"IAMTESTING  %@", challenge);
+//    NSLog(@"IAMTESTING  %@", [challenge error]);
+//    NSLog(@"IAMTESTING  %@", [challenge protectionSpace]);
+//    NSLog(@"IAMTESTING  %@", [challenge sender]);
+//}
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
