@@ -1460,7 +1460,6 @@ public class InAppBrowser extends CordovaPlugin {
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             LOG.d(I_AM_TESTING, "onReceivedError");
-                        LOG.d(I_AM_TESTING, Integer(errorCode).toString());
                                     LOG.d(I_AM_TESTING, description);
             LOG.d(I_AM_TESTING, failingUrl);
 
