@@ -19,8 +19,8 @@
 
 #import "CDVWKInAppBrowser.h"
 
-#if __has_include("CDVWebViewProcessPoolFactory.h")
-#import "CDVWebViewProcessPoolFactory.h"
+#if __has_include("CDVWKProcessPoolFactory.h")
+#import "CDVWKProcessPoolFactory.h"
 #endif
 
 #import <Cordova/CDVPluginResult.h>
@@ -131,7 +131,7 @@ static CDVWKInAppBrowser* instance = nil;
         
         NSDate* dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
         [dataStore removeDataOfTypes:[WKWebsiteDataStore allWebsiteDataTypes] modifiedSince:dateFrom completionHandler:^{
-            NSLog(@"IAMTESTING Removed all WKWebView data");
+            NSLog(@"Removed all WKWebView data");
             self.inAppBrowserViewController.webView.configuration.processPool = [[WKProcessPool alloc] init]; // create new process pool to flush all data
         }];
     }
@@ -368,14 +368,14 @@ static CDVWKInAppBrowser* instance = nil;
     NSString* urlStr = [command argumentAtIndex:0];
 
     if ([_beforeload isEqualToString:@""]) {
-        NSLog(@"IAMTESTING  unexpected loadAfterBeforeload called without feature beforeload=get|post");
+        NSLog(@"unexpected loadAfterBeforeload called without feature beforeload=get|post");
     }
     if (self.inAppBrowserViewController == nil) {
-        NSLog(@"IAMTESTING  Tried to invoke loadAfterBeforeload on IAB after it was closed.");
+        NSLog(@"Tried to invoke loadAfterBeforeload on IAB after it was closed.");
         return;
     }
     if (urlStr == nil) {
-        NSLog(@"IAMTESTING  loadAfterBeforeload called with nil argument, ignoring.");
+        NSLog(@"loadAfterBeforeload called with nil argument, ignoring.");
         return;
     }
 
@@ -419,10 +419,10 @@ static CDVWKInAppBrowser* instance = nil;
     [self.inAppBrowserViewController.webView evaluateJavaScript:script completionHandler:^(id result, NSError *error) {
         if (error == nil) {
             if (result != nil) {
-                NSLog(@"IAMTESTING  %@", result);
+                NSLog(@"%@", result);
             }
         } else {
-            NSLog(@"IAMTESTING  evaluateJavaScript error : %@ : %@", error.localizedDescription, _script);
+            NSLog(@"evaluateJavaScript error : %@ : %@", error.localizedDescription, _script);
         }
     }];
 }
@@ -493,9 +493,9 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)webView:(WKWebView *)webView
 decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
 decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
-    NSLog(@"IAMTESTING  decidePolicyForNavigationResponse");
-    NSLog(@"IAMTESTING  %@", navigationResponse);
-    NSLog(@"IAMTESTING  %@", [navigationResponse response]);
+    NSLog(@"decidePolicyForNavigationResponse");
+    NSLog(@"%@", navigationResponse);
+    NSLog(@"%@", [navigationResponse response]);
 }
 /**
  * The message handler bridge provided for the InAppBrowser is capable of executing any oustanding callback belonging
@@ -503,9 +503,18 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
  * other code execution is possible.
  */
 - (void)webView:(WKWebView *)theWebView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    NSLog(@"IAMTESTING  decidePolicyForNavigationAction");
-    NSLog(@"IAMTESTING  %@", navigationAction);
-    NSLog(@"IAMTESTING  %@", [navigationAction request]);
+    NSLog(@"decidePolicyForNavigationAction");
+    NSLog(@"%@", navigationAction);
+    NSLog(@"%@", [navigationAction request]);
+
+    WKHTTPCookieStore wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
+[wkWebViewCookieStore getAllCookies:^(NSArray wkcookies) {
+for (NSHTTPCookie* cookie in wkcookies)
+{
+NSLog(@"wk cookie name is %@",cookie.name);
+}
+}];
+
     NSURL* url = navigationAction.request.URL;
     NSURL* mainDocumentURL = navigationAction.request.mainDocumentURL;
     BOOL isTopLevelNavigation = [url isEqual:mainDocumentURL];
@@ -619,7 +628,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)didStartProvisionalNavigation:(WKWebView*)theWebView
 {
-    NSLog(@"IAMTESTING  didStartProvisionalNavigation");
+    NSLog(@"didStartProvisionalNavigation");
 //    self.inAppBrowserViewController.currentURL = theWebView.URL;
 }
 
@@ -749,8 +758,8 @@ BOOL isExiting = FALSE;
     }
     configuration.applicationNameForUserAgent = userAgent;
     configuration.userContentController = userContentController;
-#if __has_include("CDVWebViewProcessPoolFactory.h")
-    configuration.processPool = [[CDVWebViewProcessPoolFactory sharedFactory] sharedProcessPool];
+#if __has_include("CDVWKProcessPoolFactory.h")
+    configuration.processPool = [[CDVWKProcessPoolFactory sharedFactory] sharedProcessPool];
 #endif
     [configuration.userContentController addScriptMessageHandler:self name:IAB_BRIDGE_NAME];
     
@@ -1193,20 +1202,20 @@ BOOL isExiting = FALSE;
 #pragma mark WKNavigationDelegate
 
 - (void)webView:(WKWebView *)theWebView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
-    NSLog(@"IAMTESTING  didReceiveServerRedirectForProvisionalNavigation");
-    NSLog(@"IAMTESTING  %@", theWebView);
-    NSLog(@"IAMTESTING  %@", [theWebView URL]);
+    NSLog(@"didReceiveServerRedirectForProvisionalNavigation");
+    NSLog(@"%@", theWebView);
+    NSLog(@"%@", [theWebView URL]);
 }
 
-//- (void)webView:(WKWebView *)webView
-//didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-//completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-//    NSLog(@"IAMTESTING  didReceiveAuthenticationChallenge");
-//    NSLog(@"IAMTESTING  %@", challenge);
-//    NSLog(@"IAMTESTING  %@", [challenge error]);
-//    NSLog(@"IAMTESTING  %@", [challenge protectionSpace]);
-//    NSLog(@"IAMTESTING  %@", [challenge sender]);
-//}
+- (void)webView:(WKWebView *)webView
+didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+    NSLog(@"didReceiveAuthenticationChallenge");
+    NSLog(@"%@", challenge);
+    NSLog(@"%@", [challenge error]);
+    NSLog(@"%@", [challenge protectionSpace]);
+    NSLog(@"%@", [challenge sender]);
+}
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
@@ -1254,7 +1263,7 @@ BOOL isExiting = FALSE;
     
 - (void)webView:(WKWebView*)theWebView failedNavigation:(NSString*) delegateName withError:(nonnull NSError *)error{
     // log fail message, stop spinner, update back/forward
-    NSLog(@"IAMTESTING  webView:%@ - %ld: %@", delegateName, (long)error.code, [error localizedDescription]);
+    NSLog(@"webView:%@ - %ld: %@", delegateName, (long)error.code, [error localizedDescription]);
     
     self.backButton.enabled = theWebView.canGoBack;
     self.forwardButton.enabled = theWebView.canGoForward;
