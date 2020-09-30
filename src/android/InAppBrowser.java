@@ -92,7 +92,6 @@ public class InAppBrowser extends CordovaPlugin {
 
     private static final String NULL = "null";
     protected static final String LOG_TAG = "InAppBrowser";
-    protected static final String I_AM_TESTING = "IAMTESTING";
     private static final String SELF = "_self";
     private static final String SYSTEM = "_system";
     private static final String EXIT_EVENT = "exit";
@@ -1394,8 +1393,8 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            LOG.d(I_AM_TESTING, "onPageStarted");
-            LOG.d(I_AM_TESTING, url);
+            System.out.print("IAMTESTING onPageStarted");
+            System.out.print("IAMTESTING " + url);
 
             super.onPageStarted(view, url, favicon);
             String newloc = "";
@@ -1426,8 +1425,8 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onPageFinished(WebView view, String url) {
-            LOG.d(I_AM_TESTING, "onPageFinished");
-            LOG.d(I_AM_TESTING, url);
+            System.out.print("IAMTESTING onPageFinished");
+            System.out.print("IAMTESTING " + url);
 
             super.onPageFinished(view, url);
 
@@ -1459,9 +1458,10 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            LOG.d(I_AM_TESTING, "onReceivedError");
-                                    LOG.d(I_AM_TESTING, description);
-            LOG.d(I_AM_TESTING, failingUrl);
+            System.out.print("IAMTESTING onReceivedError");
+                        System.out.print("IAMTESTING " + description);
+            System.out.print("IAMTESTING " + failingUrl);
+
 
 
             super.onReceivedError(view, errorCode, description, failingUrl);
@@ -1481,7 +1481,7 @@ public class InAppBrowser extends CordovaPlugin {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            LOG.d(I_AM_TESTING, "onReceivedSslError");
+            System.out.print("IAMTESTING onReceivedSslError");
 
             super.onReceivedSslError(view, handler, error);
             try {
@@ -1512,7 +1512,8 @@ public class InAppBrowser extends CordovaPlugin {
                     message = "The certificate authority is not trusted";
                     break;
                 }
-                LOG.d(I_AM_TESTING, message);
+                            System.out.print("IAMTESTING " + message);
+
 
                 obj.put("message", message);
 
@@ -1528,9 +1529,10 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-            LOG.d(I_AM_TESTING, "onReceivedHttpAuthRequest");
-            LOG.d(I_AM_TESTING, host);
-            LOG.d(I_AM_TESTING, realm);
+            System.out.print("IAMTESTING onReceivedHttpAuthRequest");
+            System.out.print("IAMTESTING " + host);
+            System.out.print("IAMTESTING " + realm);
+
             // Check if there is some plugin which can resolve this auth challenge
             PluginManager pluginManager = null;
             try {
