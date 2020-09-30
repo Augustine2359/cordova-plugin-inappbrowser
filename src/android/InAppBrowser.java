@@ -92,6 +92,7 @@ public class InAppBrowser extends CordovaPlugin {
 
     private static final String NULL = "null";
     protected static final String LOG_TAG = "InAppBrowser";
+    protected static final String I_AM_TESTING = "IAMTESTING";
     private static final String SELF = "_self";
     private static final String SYSTEM = "_system";
     private static final String EXIT_EVENT = "exit";
@@ -1393,6 +1394,9 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            LOG.d(I_AM_TESTING, "onPageStarted");
+            LOG.d(I_AM_TESTING, url);
+
             super.onPageStarted(view, url, favicon);
             String newloc = "";
             if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
@@ -1422,6 +1426,9 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onPageFinished(WebView view, String url) {
+            LOG.d(I_AM_TESTING, "onPageFinished");
+            LOG.d(I_AM_TESTING, url);
+
             super.onPageFinished(view, url);
 
             // Set the namespace for postMessage()
@@ -1452,6 +1459,12 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            LOG.d(I_AM_TESTING, "onReceivedError");
+                        LOG.d(I_AM_TESTING, errorCode);
+                                    LOG.d(I_AM_TESTING, description);
+            LOG.d(I_AM_TESTING, failingUrl);
+
+
             super.onReceivedError(view, errorCode, description, failingUrl);
 
             try {
@@ -1469,6 +1482,8 @@ public class InAppBrowser extends CordovaPlugin {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            LOG.d(I_AM_TESTING, "onReceivedSslError");
+
             super.onReceivedSslError(view, handler, error);
             try {
                 JSONObject obj = new JSONObject();
@@ -1498,6 +1513,8 @@ public class InAppBrowser extends CordovaPlugin {
                     message = "The certificate authority is not trusted";
                     break;
                 }
+                LOG.d(I_AM_TESTING, message);
+
                 obj.put("message", message);
 
                 sendUpdate(obj, true, PluginResult.Status.ERROR);
@@ -1512,7 +1529,9 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-
+            LOG.d(I_AM_TESTING, "onReceivedHttpAuthRequest");
+            LOG.d(I_AM_TESTING, host);
+            LOG.d(I_AM_TESTING, realm);
             // Check if there is some plugin which can resolve this auth challenge
             PluginManager pluginManager = null;
             try {
