@@ -510,12 +510,12 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
    if (@available(iOS 11.0, *)) {
     WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-// [wkWebViewCookieStore getAllCookies:^(NSArray wkcookies) {
+[wkWebViewCookieStore getAllCookies:^(NSArray wkcookies) {
 // for (NSHTTPCookie* cookie in wkcookies)
 // {
 // NSLog(@"wk cookie name is %@",cookie.name);
 // }
-// }];
+}];
    }
 #endif
 
