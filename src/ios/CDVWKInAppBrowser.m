@@ -521,7 +521,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 //{
 //NSLog(@"IAMTESTING wk cookie name is %@",cookie.name);
 //}
-//}];
+}];
    }
 #endif
 
