@@ -515,7 +515,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
     NSLog(@"IAMTESTING got cookies");
     NSLog(@"IAMTESTING %@", wkcookies);
-    NSLog(@"IAMTESTING %@", [wkcookies length]);
+    // NSLog(@"IAMTESTING %@", [wkcookies length]);
     NSLog(@"IAMTESTING %@", [wkcookies objectAtIndex:0]);
 //for (NSHTTPCookie* cookie in wkcookies)
 //{
