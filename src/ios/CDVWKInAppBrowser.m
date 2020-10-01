@@ -514,12 +514,14 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     NSLog(@"IAMTESTING declared cookie store");
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
     NSLog(@"IAMTESTING got cookies");
-    NSLog(@"%@", wkcookies);
-for (NSHTTPCookie* cookie in wkcookies)
-{
-NSLog(@"IAMTESTING wk cookie name is %@",cookie.name);
-}
-}];
+    NSLog(@"IAMTESTING %@", wkcookies);
+    NSLog(@"IAMTESTING %@", [wkcookies length]);
+    NSLog(@"IAMTESTING %@", [wkcookies objectAtIndex:0]);
+//for (NSHTTPCookie* cookie in wkcookies)
+//{
+//NSLog(@"IAMTESTING wk cookie name is %@",cookie.name);
+//}
+//}];
    }
 #endif
 
