@@ -515,12 +515,14 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
     NSLog(@"IAMTESTING got cookies");
     NSLog(@"IAMTESTING %@", wkcookies);
-    if (wkcookies == nil || [wkcookies isKindOfClass:[NSNull class]]) {
-        NSLog(@"IAMTESTING null cookies");
+    NSLog(@"IAMTESTING %@", [wkcookies className]);
+    if ([wkcookies respondsToSelector:NSSelectorFromString(@"count")]) {
+        NSLog(@"IAMTESTING %@", [wkcookies count]);
     }
     else {
-    NSLog(@"IAMTESTING %@", [wkcookies count]);
+        NSLog(@"IAMTESTING wkcookies doesnt count");
     }
+
     // NSLog(@"IAMTESTING %@", [wkcookies objectAtIndex:0]);
 //for (NSHTTPCookie* cookie in wkcookies)
 //{
