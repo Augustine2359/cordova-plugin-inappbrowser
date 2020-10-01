@@ -135,8 +135,9 @@ static CDVWKInAppBrowser* instance = nil;
             self.inAppBrowserViewController.webView.configuration.processPool = [[WKProcessPool alloc] init]; // create new process pool to flush all data
         }];
     }
-    
+
     if (browserOptions.clearcache) {
+        NSLog(@"IAMTESTING clearcache is on");
         bool isAtLeastiOS11 = false;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 11.0, *)) {
@@ -170,9 +171,23 @@ static CDVWKInAppBrowser* instance = nil;
                  }
              }];
         }
+    } else {
+        NSLog(@"IAMTESTING clearcache is off");
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING %@", cookies);
+                NSHTTPCookie* cookie;
+                for(cookie in cookies){
+                    // [cookieStore deleteCookie:cookie completionHandler:nil];
+                }
+            }];
+#endif
     }
     
     if (browserOptions.clearsessioncache) {
+        NSLog(@"IAMTESTING clearsessioncache is on");
+
         bool isAtLeastiOS11 = false;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 11.0, *)) {
@@ -195,6 +210,19 @@ static CDVWKInAppBrowser* instance = nil;
         }else{
             NSLog(@"clearsessioncache not available below iOS 11.0");
         }
+    }
+    else {
+                NSLog(@"IAMTESTING clearsessioncache is off");
+                #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING %@", cookies);
+                NSHTTPCookie* cookie;
+                for(cookie in cookies){
+                    // [cookieStore deleteCookie:cookie completionHandler:nil];
+                }
+            }];
+#endif
     }
 
     if (self.inAppBrowserViewController == nil) {
@@ -515,7 +543,8 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
     NSLog(@"IAMTESTING got cookies");
     NSLog(@"IAMTESTING %@", wkcookies);
-    NSLog(@"IAMTESTING %@", [wkcookies className]);
+
+    // NSLog(@"IAMTESTING %@", [wkcookies className]);
     if ([wkcookies respondsToSelector:NSSelectorFromString(@"count")]) {
         NSLog(@"IAMTESTING %@", [wkcookies count]);
     }
@@ -1227,11 +1256,11 @@ BOOL isExiting = FALSE;
 - (void)webView:(WKWebView *)webView
 didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    NSLog(@"didReceiveAuthenticationChallenge");
-    NSLog(@"%@", challenge);
-    NSLog(@"%@", [challenge error]);
-    NSLog(@"%@", [challenge protectionSpace]);
-    NSLog(@"%@", [challenge sender]);
+    NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
+    NSLog(@"IAMTESTING %@", challenge);
+    NSLog(@"IAMTESTING %@", [challenge error]);
+    NSLog(@"IAMTESTING %@", [challenge protectionSpace]);
+    NSLog(@"IAMTESTING %@", [challenge sender]);
 }
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
@@ -1266,6 +1295,20 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
 
 - (void)webView:(WKWebView *)theWebView didFinishNavigation:(WKNavigation *)navigation
 {
+    NSLog(@"IAMTESTING didFinishNavigation");
+    NSLog(@"IAMTESTING %@", self.currentURL);
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            // Deletes all cookies
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING %@", cookies);
+                NSHTTPCookie* cookie;
+                for(cookie in cookies){
+                    // [cookieStore deleteCookie:cookie completionHandler:nil];
+                }
+            }];
+    #endif
+
     // update url, stop spinner, update back/forward
     
     self.addressLabel.text = [self.currentURL absoluteString];
