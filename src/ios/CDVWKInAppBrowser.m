@@ -516,7 +516,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 // NSLog(@"wk cookie name is %@",cookie.name);
 // }
 // }];
-//    }
+   }
 #endif
 
     NSURL* url = navigationAction.request.URL;
