@@ -1287,7 +1287,6 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
     
     if (isTopLevelNavigation) {
         self.currentURL = url;
-        [mainDocumentURL ]
     }
     
     [self.navigationDelegate webView:theWebView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
