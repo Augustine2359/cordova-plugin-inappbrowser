@@ -509,8 +509,12 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
    if (@available(iOS 11.0, *)) {
+       NSLog(@"IAMTESTING going to get cookies");
     WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
+    NSLog(@"IAMTESTING declared cookie store");
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+    NSLog(@"IAMTESTING got cookies");
+    NSLog(@"%@", wkcookies);
 for (NSHTTPCookie* cookie in wkcookies)
 {
 NSLog(@"IAMTESTING wk cookie name is %@",cookie.name);
