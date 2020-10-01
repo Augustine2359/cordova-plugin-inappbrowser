@@ -177,10 +177,6 @@ static CDVWKInAppBrowser* instance = nil;
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING %@", cookies);
-                NSHTTPCookie* cookie;
-                for(cookie in cookies){
-                    // [cookieStore deleteCookie:cookie completionHandler:nil];
-                }
             }];
 #endif
     }
@@ -213,14 +209,10 @@ static CDVWKInAppBrowser* instance = nil;
     }
     else {
                 NSLog(@"IAMTESTING clearsessioncache is off");
-                #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING %@", cookies);
-                NSHTTPCookie* cookie;
-                for(cookie in cookies){
-                    // [cookieStore deleteCookie:cookie completionHandler:nil];
-                }
             }];
 #endif
     }
@@ -538,11 +530,18 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
    if (@available(iOS 11.0, *)) {
        NSLog(@"IAMTESTING going to get cookies");
+
+       WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+       WKHTTPCookieStore *otherCookieStore = [dataStore httpCookieStore];
+       [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+           NSLog(@"IAMTESTING default store %@", wkcookies);
+
+       }];
+
     WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-    NSLog(@"IAMTESTING declared cookie store");
 [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
     NSLog(@"IAMTESTING got cookies");
-    NSLog(@"IAMTESTING %@", wkcookies);
+    NSLog(@"IAMTESTING website cookies is %@", wkcookies);
 
     // NSLog(@"IAMTESTING %@", [wkcookies className]);
     if ([wkcookies respondsToSelector:NSSelectorFromString(@"count")]) {
@@ -1288,6 +1287,7 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
     
     if (isTopLevelNavigation) {
         self.currentURL = url;
+        [mainDocumentURL ]
     }
     
     [self.navigationDelegate webView:theWebView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
@@ -1299,13 +1299,15 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
     NSLog(@"IAMTESTING %@", self.currentURL);
     #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             // Deletes all cookies
+            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSLog(@"IAMTESTING %@", cookies);
-                NSHTTPCookie* cookie;
-                for(cookie in cookies){
-                    // [cookieStore deleteCookie:cookie completionHandler:nil];
-                }
+                NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+            }];
+          
+            WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
+            [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+                NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
             }];
     #endif
 
