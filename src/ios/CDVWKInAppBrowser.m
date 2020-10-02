@@ -173,12 +173,12 @@ static CDVWKInAppBrowser* instance = nil;
         }
     } else {
         NSLog(@"IAMTESTING clearcache is off");
-// #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            // [cookieStore getAllCookies:^(NSArray* cookies) {
-            //     NSLog(@"IAMTESTING %@", cookies);
-            // }];
-// #endif
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING %@", cookies);
+            }];
+#endif
     }
     
     if (browserOptions.clearsessioncache) {
@@ -209,12 +209,12 @@ static CDVWKInAppBrowser* instance = nil;
     }
     else {
                 NSLog(@"IAMTESTING clearsessioncache is off");
-// #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            // [cookieStore getAllCookies:^(NSArray* cookies) {
-            //     NSLog(@"IAMTESTING %@", cookies);
-            // }];
-// #endif
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING %@", cookies);
+            }];
+#endif
     }
 
     if (self.inAppBrowserViewController == nil) {
