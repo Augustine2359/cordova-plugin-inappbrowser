@@ -510,18 +510,6 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     NSLog(@"IAMTESTING %@", [navigationResponse response]);
 }
 
-- (void)webView:(WKWebView *)webView
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
-    NSLog(@"IAMTESTING challenge %@", challenge);
-    NSLog(@"IAMTESTING challenge error %@", [challenge error]);
-    NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
-    NSLog(@"IAMTESTING challenge authenticationmethod %@", [[challenge protectionSpace] authenticationMethod]);
-    NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
-    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-}
-
 /**
  * The message handler bridge provided for the InAppBrowser is capable of executing any oustanding callback belonging
  * to the InAppBrowser plugin. Care has been taken that other callbacks cannot be triggered, and that no
@@ -1270,15 +1258,17 @@ BOOL isExiting = FALSE;
     NSLog(@"%@", [theWebView URL]);
 }
 
-// - (void)webView:(WKWebView *)webView
-// didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-// completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-//     NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
-//     NSLog(@"IAMTESTING %@", challenge);
-//     NSLog(@"IAMTESTING %@", [challenge error]);
-//     NSLog(@"IAMTESTING %@", [challenge protectionSpace]);
-//     NSLog(@"IAMTESTING %@", [challenge sender]);
-// }
+- (void)webView:(WKWebView *)webView
+didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+    NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
+    NSLog(@"IAMTESTING challenge %@", challenge);
+    NSLog(@"IAMTESTING challenge error %@", [challenge error]);
+    NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
+    NSLog(@"IAMTESTING challenge authenticationmethod %@", [[challenge protectionSpace] authenticationMethod]);
+    NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
+    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+}
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
