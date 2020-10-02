@@ -519,9 +519,9 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     NSLog(@"IAMTESTING decidePolicyForNavigationAction");
     NSLog(@"IAMTESTING %@", navigationAction);
     NSLog(@"IAMTESTING %@", [navigationAction request]);
-    NSURLRequest *navigationRequest = [navigationAction request];
-    NSURL *actionRequestURL = [navigationRequest url];
-    NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
+    // NSURLRequest *navigationRequest = [navigationAction request];
+    // NSURL *actionRequestURL = [navigationRequest url];
+    // NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
    if (@available(iOS 11.0, *)) {
@@ -1272,9 +1272,9 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
     NSLog(@"IAMTESTING challenge %@", challenge);
     NSLog(@"IAMTESTING challenge error %@", [challenge error]);
     NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
-    NSURLProtectionSpace *proteccSpace = [challenge protectionSpace];
-    NSLog(@"IAMTESTING challenge authenticationmethod %@", [proteccSpace authenticationMethod]);
-    NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
+    // NSURLProtectionSpace *proteccSpace = [challenge protectionSpace];
+    // NSLog(@"IAMTESTING challenge authenticationmethod %@", [proteccSpace authenticationMethod]);
+    // NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
     completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
