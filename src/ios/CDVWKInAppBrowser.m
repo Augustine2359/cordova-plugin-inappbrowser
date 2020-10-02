@@ -679,20 +679,20 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
-                    NSLog(@"IAMTESTING didFinishNavigation");
-        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // Deletes all cookies
-            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
-            }];
+    //                 NSLog(@"IAMTESTING didFinishNavigation");
+    //     #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    //         // Deletes all cookies
+    //         WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+    //         WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+    //         [cookieStore getAllCookies:^(NSArray* cookies) {
+    //             NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+    //         }];
           
-            WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-            [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
-                NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
-            }];
-    #endif
+    //         WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
+    //         [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+    //             NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
+    //         }];
+    // #endif
 
     if (self.callbackId != nil) {
         NSString* url = [theWebView.URL absoluteString];
@@ -1267,15 +1267,15 @@ BOOL isExiting = FALSE;
     NSLog(@"%@", [theWebView URL]);
 }
 
-- (void)webView:(WKWebView *)webView
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
-    NSLog(@"IAMTESTING %@", challenge);
-    NSLog(@"IAMTESTING %@", [challenge error]);
-    NSLog(@"IAMTESTING %@", [challenge protectionSpace]);
-    NSLog(@"IAMTESTING %@", [challenge sender]);
-}
+// - (void)webView:(WKWebView *)webView
+// didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+// completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+//     NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
+//     NSLog(@"IAMTESTING %@", challenge);
+//     NSLog(@"IAMTESTING %@", [challenge error]);
+//     NSLog(@"IAMTESTING %@", [challenge protectionSpace]);
+//     NSLog(@"IAMTESTING %@", [challenge sender]);
+// }
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
