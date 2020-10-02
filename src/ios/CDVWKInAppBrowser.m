@@ -533,7 +533,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
        WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
        WKHTTPCookieStore *otherCookieStore = [dataStore httpCookieStore];
-       [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+       [otherCookieStore getAllCookies:^(NSArray *wkcookies) {
            NSLog(@"IAMTESTING default store %@", wkcookies);
 
        }];
