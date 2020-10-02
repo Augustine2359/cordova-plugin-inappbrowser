@@ -679,6 +679,20 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            // Deletes all cookies
+            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+            }];
+          
+            WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
+            [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
+                NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
+            }];
+    #endif
+
     if (self.callbackId != nil) {
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
