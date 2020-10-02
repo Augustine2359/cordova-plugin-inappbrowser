@@ -173,12 +173,12 @@ static CDVWKInAppBrowser* instance = nil;
         }
     } else {
         NSLog(@"IAMTESTING clearcache is off");
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+// #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             // WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             // [cookieStore getAllCookies:^(NSArray* cookies) {
             //     NSLog(@"IAMTESTING %@", cookies);
             // }];
-#endif
+// #endif
     }
     
     if (browserOptions.clearsessioncache) {
@@ -209,12 +209,12 @@ static CDVWKInAppBrowser* instance = nil;
     }
     else {
                 NSLog(@"IAMTESTING clearsessioncache is off");
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+// #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             // WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             // [cookieStore getAllCookies:^(NSArray* cookies) {
             //     NSLog(@"IAMTESTING %@", cookies);
             // }];
-#endif
+// #endif
     }
 
     if (self.inAppBrowserViewController == nil) {
@@ -556,7 +556,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 //{
 //NSLog(@"IAMTESTING wk cookie name is %@",cookie.name);
 //}
-}];
+// }];
    }
 #endif
 
@@ -1296,7 +1296,7 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
 {
     NSLog(@"IAMTESTING didFinishNavigation");
     NSLog(@"IAMTESTING %@", self.currentURL);
-    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             // Deletes all cookies
             // WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             // WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
@@ -1308,7 +1308,7 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
             // [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
             //     NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
             // }];
-    #endif
+    // #endif
 
     // update url, stop spinner, update back/forward
     
