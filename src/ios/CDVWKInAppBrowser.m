@@ -177,9 +177,9 @@ static CDVWKInAppBrowser* instance = nil;
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING openInInAppBrowser cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
-                }
+                // for (NSHTTPCookie *cookie in cookies) {
+                //     NSLog(@"IAMTESTING %@", cookie);
+                // }
             }];
 #endif
     }
@@ -519,8 +519,8 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     NSLog(@"IAMTESTING decidePolicyForNavigationAction");
     NSLog(@"IAMTESTING %@", navigationAction);
     NSLog(@"IAMTESTING %@", [navigationAction request]);
-    NSURL *actionRequestURL = [[navigationAction request] url];
-    NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
+    // NSURL *actionRequestURL = [[navigationAction request] url];
+    // NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
    if (@available(iOS 11.0, *)) {
@@ -530,17 +530,17 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
        WKHTTPCookieStore *otherCookieStore = [dataStore httpCookieStore];
        [otherCookieStore getAllCookies:^(NSArray *cookies) {
             NSLog(@"IAMTESTING decidePolicyForNavigationAction defaultDataStore cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
-                }
+                // for (NSHTTPCookie *cookie in cookies) {
+                //     NSLog(@"IAMTESTING %@", cookie);
+                // }
        }];
 
     WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
 [wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
     NSLog(@"IAMTESTING decidePolicyForNavigationAction websiteDataStore cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
-                }
+                // for (NSHTTPCookie *cookie in cookies) {
+                //     NSLog(@"IAMTESTING %@", cookie);
+                // }
 }];
    }
 #endif
@@ -671,17 +671,17 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING didFinishNavigation defaultDataStore cookies");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
-                }
+                // for (NSHTTPCookie *cookie in cookies) {
+                //     NSLog(@"IAMTESTING %@", cookie);
+                // }
             }];
           
             WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
             [wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
                 NSLog(@"IAMTESTING didFinishNavigation websiteDataStore cookies");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
-                }
+                // for (NSHTTPCookie *cookie in cookies) {
+                //     NSLog(@"IAMTESTING %@", cookie);
+                // }
             }];
     #endif
 
@@ -1265,7 +1265,7 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
     NSLog(@"IAMTESTING challenge %@", challenge);
     NSLog(@"IAMTESTING challenge error %@", [challenge error]);
     NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
-    NSLog(@"IAMTESTING challenge authenticationmethod %@", [[challenge protectionSpace] authenticationMethod]);
+    // NSLog(@"IAMTESTING challenge authenticationmethod %@", [[challenge protectionSpace] authenticationMethod]);
     NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
     completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
