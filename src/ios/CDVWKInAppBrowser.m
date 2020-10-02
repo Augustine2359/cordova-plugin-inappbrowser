@@ -679,6 +679,7 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
+                    NSLog(@"IAMTESTING didFinishNavigation");
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             // Deletes all cookies
             WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
@@ -1308,8 +1309,8 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
 
 - (void)webView:(WKWebView *)theWebView didFinishNavigation:(WKNavigation *)navigation
 {
-    NSLog(@"IAMTESTING didFinishNavigation");
-    NSLog(@"IAMTESTING %@", self.currentURL);
+    // NSLog(@"IAMTESTING didFinishNavigation");
+    // NSLog(@"IAMTESTING %@", self.currentURL);
     // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     //         // Deletes all cookies
     //         WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
