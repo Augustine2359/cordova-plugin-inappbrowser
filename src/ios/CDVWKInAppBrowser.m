@@ -177,8 +177,9 @@ static CDVWKInAppBrowser* instance = nil;
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING openInInAppBrowser cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
+                NSLog(@"IAMTESTING %@", cookies);
+                for (int i=0; i < [cookies count]; i++) {
+                    NSLog(@"IAMTESTING %@", cookies[i]);
                 }
             }];
 #endif
@@ -531,16 +532,18 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
        WKHTTPCookieStore *otherCookieStore = [dataStore httpCookieStore];
        [otherCookieStore getAllCookies:^(NSArray *cookies) {
             NSLog(@"IAMTESTING decidePolicyForNavigationAction defaultDataStore cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
+                NSLog(@"IAMTESTING %@", cookies);
+                for (int i=0; i < [cookies count]; i++) {
+                    NSLog(@"IAMTESTING %@", cookies[i]);
                 }
        }];
 
     WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
 [wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
     NSLog(@"IAMTESTING decidePolicyForNavigationAction websiteDataStore cookies found");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
+                NSLog(@"IAMTESTING %@", cookies);
+                for (int i=0; i < [cookies count]; i++) {
+                    NSLog(@"IAMTESTING %@", cookies[i]);
                 }
 }];
    }
@@ -672,16 +675,18 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             [cookieStore getAllCookies:^(NSArray* cookies) {
                 NSLog(@"IAMTESTING didFinishNavigation defaultDataStore cookies");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
+                NSLog(@"IAMTESTING %@", cookies);
+                for (int i=0; i < [cookies count]; i++) {
+                    NSLog(@"IAMTESTING %@", cookies[i]);
                 }
             }];
           
             WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
             [wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
                 NSLog(@"IAMTESTING didFinishNavigation websiteDataStore cookies");
-                for (NSHTTPCookie *cookie in cookies) {
-                    NSLog(@"IAMTESTING %@", cookie);
+                NSLog(@"IAMTESTING %@", cookies);
+                for (int i=0; i < [cookies count]; i++) {
+                    NSLog(@"IAMTESTING %@", cookies[i]);
                 }
             }];
     #endif
