@@ -1206,7 +1206,7 @@ BOOL isExiting = FALSE;
                     stringToAdd = [NSString stringWithFormat:@"%@=%@", [cookie name], [cookie value]];
                 }
                 else {
-                    stringToAdd = [NSString stringWithFormat:@";%@=%@", [cookie name], [cookie value]];
+                    stringToAdd = [NSString stringWithFormat:@"; %@=%@", [cookie name], [cookie value]];
                 }
                 [cookieString appendString:stringToAdd];
             }
