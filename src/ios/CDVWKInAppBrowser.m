@@ -521,6 +521,8 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     NSLog(@"IAMTESTING decidePolicyForNavigationAction");
     NSLog(@"IAMTESTING %@", navigationAction);
     NSLog(@"IAMTESTING %@", [navigationAction request]);
+                NSMutableURLRequest* request = navigationAction.request;
+            NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
     // NSURLRequest *navigationRequest = [navigationAction request];
     // NSURL *actionRequestURL = [navigationRequest url];
     // NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
