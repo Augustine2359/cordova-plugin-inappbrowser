@@ -1195,13 +1195,25 @@ BOOL isExiting = FALSE;
         WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
         [cookieStore getAllCookies:^(NSArray* cookies) {
             NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+            NSMutableString *cookieString = [NSMutableString string];
             for (int i=0; i < [cookies count]; i++) {
+                NSString *stringToAdd;
                 NSHTTPCookie *cookie = cookies[i];
                 NSLog(@"IAMTESTING %@=%@", [cookie name], [cookie value]);
+                if (i == 0) {
+                    stringToAdd = [NSString stringWithFormat:@"%@=%@", [cookie name], [cookie value]];
+                }
+                else {
+                    stringToAdd = [NSString stringWithFormat:@";%@=%@", [cookie name], [cookie value]];
+                }
+                [cookieString appendString:stringToAdd];
             }
+            [cookieString appendString:@";"];
+            NSLog(@"IAMTESTING cookieString is %@", cookieString);
 
-            NSURLRequest* request = [NSURLRequest requestWithURL:url];
+            NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
             NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
+            [request setValue:cookieString forHTTPHeaderField:@"Cookie"];
             NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
             NSDictionary *httpHeaders = [request allHTTPHeaderFields];
             for (id header in httpHeaders) {
