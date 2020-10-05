@@ -129,6 +129,7 @@ static CDVWKInAppBrowser* instance = nil;
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
     
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+
     if (browserOptions.cleardata) {
         
         NSDate* dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
@@ -817,7 +818,9 @@ BOOL isExiting = FALSE;
     configuration.userContentController = userContentController;
 #if __has_include("CDVWebViewProcessPoolFactory.h")
     configuration.processPool = [[CDVWebViewProcessPoolFactory sharedFactory] sharedProcessPool];
+    NSLog(@"IAMTESTING got CDVWebViewProcessPoolFactory");
 #endif
+    NSLog(@"IAMTESTING did I CDVWebViewProcessPoolFactory");
     [configuration.userContentController addScriptMessageHandler:self name:IAB_BRIDGE_NAME];
     
     //WKWebView options
@@ -1187,14 +1190,26 @@ BOOL isExiting = FALSE;
     if ([url.scheme isEqualToString:@"file"]) {
         [self.webView loadFileURL:url allowingReadAccessToURL:url];
     } else {
-        NSURLRequest* request = [NSURLRequest requestWithURL:url];
-        NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
-        NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
-        NSDictionary *httpHeaders = [request allHTTPHeaderFields];
-        for (id header in httpHeaders) {
-            NSLog(@"IAMTESTING header=%@ value=%@", header, [httpHeaders objectForKey:header]);
-        }
-        [self.webView loadRequest:request];
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+        WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+        [cookieStore getAllCookies:^(NSArray* cookies) {
+            NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+            for (int i=0; i < [cookies count]; i++) {
+                NSHTTPCookie *cookie = cookies[i];
+                NSLog(@"IAMTESTING %@=%@", [cookie name], [cookie value]);
+            }
+
+            NSURLRequest* request = [NSURLRequest requestWithURL:url];
+            NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
+            NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
+            NSDictionary *httpHeaders = [request allHTTPHeaderFields];
+            for (id header in httpHeaders) {
+                NSLog(@"IAMTESTING header=%@ value=%@", header, [httpHeaders objectForKey:header]);
+            }
+            [self.webView loadRequest:request];
+        }];
+    #endif
     }
 }
 
