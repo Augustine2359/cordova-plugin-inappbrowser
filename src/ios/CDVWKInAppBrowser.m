@@ -19,9 +19,9 @@
 
 #import "CDVWKInAppBrowser.h"
 
-#if __has_include("CDVWebViewProcessPoolFactory.h")
+// #if __has_include("CDVWebViewProcessPoolFactory.h")
 #import "CDVWebViewProcessPoolFactory.h"
-#endif
+// #endif
 
 #import <Cordova/CDVPluginResult.h>
 
@@ -818,10 +818,10 @@ BOOL isExiting = FALSE;
     }
     configuration.applicationNameForUserAgent = userAgent;
     configuration.userContentController = userContentController;
-#if __has_include("CDVWebViewProcessPoolFactory.h")
+// #if __has_include("CDVWebViewProcessPoolFactory.h")
     configuration.processPool = [[CDVWebViewProcessPoolFactory sharedFactory] sharedProcessPool];
     NSLog(@"IAMTESTING got CDVWebViewProcessPoolFactory");
-#endif
+// #endif
     NSLog(@"IAMTESTING did I CDVWebViewProcessPoolFactory");
     [configuration.userContentController addScriptMessageHandler:self name:IAB_BRIDGE_NAME];
     
