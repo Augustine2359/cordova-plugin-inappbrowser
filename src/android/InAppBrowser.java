@@ -1393,9 +1393,6 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            System.out.print("IAMTESTING onPageStarted");
-            System.out.print("IAMTESTING " + url);
-
             super.onPageStarted(view, url, favicon);
             String newloc = "";
             if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
@@ -1425,9 +1422,6 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onPageFinished(WebView view, String url) {
-            System.out.print("IAMTESTING onPageFinished");
-            System.out.print("IAMTESTING " + url);
-
             super.onPageFinished(view, url);
 
             // Set the namespace for postMessage()
@@ -1458,12 +1452,6 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            System.out.print("IAMTESTING onReceivedError");
-                        System.out.print("IAMTESTING " + description);
-            System.out.print("IAMTESTING " + failingUrl);
-
-
-
             super.onReceivedError(view, errorCode, description, failingUrl);
 
             try {
@@ -1481,8 +1469,6 @@ public class InAppBrowser extends CordovaPlugin {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            System.out.print("IAMTESTING onReceivedSslError");
-
             super.onReceivedSslError(view, handler, error);
             try {
                 JSONObject obj = new JSONObject();
@@ -1512,9 +1498,6 @@ public class InAppBrowser extends CordovaPlugin {
                     message = "The certificate authority is not trusted";
                     break;
                 }
-                            System.out.print("IAMTESTING " + message);
-
-
                 obj.put("message", message);
 
                 sendUpdate(obj, true, PluginResult.Status.ERROR);
@@ -1529,9 +1512,6 @@ public class InAppBrowser extends CordovaPlugin {
          */
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-            System.out.print("IAMTESTING onReceivedHttpAuthRequest");
-            System.out.print("IAMTESTING " + host);
-            System.out.print("IAMTESTING " + realm);
 
             // Check if there is some plugin which can resolve this auth challenge
             PluginManager pluginManager = null;

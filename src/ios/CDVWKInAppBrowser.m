@@ -126,12 +126,9 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)openInInAppBrowser:(NSURL*)url withOptions:(NSString*)options
 {
-    NSLog(@"IAMTESTING openInInAppBrowser %@", [url absoluteString]);
-
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
     
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-
     if (browserOptions.cleardata) {
         
         NSDate* dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
@@ -175,17 +172,6 @@ static CDVWKInAppBrowser* instance = nil;
                  }
              }];
         }
-    } else {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSLog(@"IAMTESTING openInInAppBrowser cookies found");
-                NSLog(@"IAMTESTING %@", cookies);
-                for (int i=0; i < [cookies count]; i++) {
-                    NSLog(@"IAMTESTING %@", cookies[i]);
-                }
-            }];
-#endif
     }
     
     if (browserOptions.clearsessioncache) {
@@ -506,53 +492,12 @@ static CDVWKInAppBrowser* instance = nil;
     return NO;
 }
 
-- (void)webView:(WKWebView *)webView
-decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
-decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
-    NSLog(@"IAMTESTING decidePolicyForNavigationResponse");
-    NSLog(@"IAMTESTING %@", navigationResponse);
-    NSLog(@"IAMTESTING %@", [navigationResponse response]);
-}
-
 /**
  * The message handler bridge provided for the InAppBrowser is capable of executing any oustanding callback belonging
  * to the InAppBrowser plugin. Care has been taken that other callbacks cannot be triggered, and that no
  * other code execution is possible.
  */
 - (void)webView:(WKWebView *)theWebView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    NSLog(@"IAMTESTING decidePolicyForNavigationAction");
-    NSLog(@"IAMTESTING %@", navigationAction);
-    NSLog(@"IAMTESTING %@", [navigationAction request]);
-                NSMutableURLRequest* request = navigationAction.request;
-            NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
-    // NSURLRequest *navigationRequest = [navigationAction request];
-    // NSURL *actionRequestURL = [navigationRequest url];
-    // NSLog(@"IAMTESTING %@", [actionRequestURL absoluteString]);
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-   if (@available(iOS 11.0, *)) {
-       NSLog(@"IAMTESTING decidePolicyForNavigationAction going to get cookies");
-
-       WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-       WKHTTPCookieStore *otherCookieStore = [dataStore httpCookieStore];
-       [otherCookieStore getAllCookies:^(NSArray *cookies) {
-            NSLog(@"IAMTESTING decidePolicyForNavigationAction defaultDataStore cookies found");
-                NSLog(@"IAMTESTING %@", cookies);
-                for (int i=0; i < [cookies count]; i++) {
-                    NSLog(@"IAMTESTING %@", cookies[i]);
-                }
-       }];
-
-    WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-[wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
-    NSLog(@"IAMTESTING decidePolicyForNavigationAction websiteDataStore cookies found");
-                NSLog(@"IAMTESTING %@", cookies);
-                for (int i=0; i < [cookies count]; i++) {
-                    NSLog(@"IAMTESTING %@", cookies[i]);
-                }
-}];
-   }
-#endif
 
     NSURL* url = navigationAction.request.URL;
     NSURL* mainDocumentURL = navigationAction.request.mainDocumentURL;
@@ -673,29 +618,6 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
-        NSLog(@"IAMTESTING didFinishNavigation");
-        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // Deletes all cookies
-            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSLog(@"IAMTESTING didFinishNavigation defaultDataStore cookies");
-                NSLog(@"IAMTESTING %@", cookies);
-                for (int i=0; i < [cookies count]; i++) {
-                    NSLog(@"IAMTESTING %@", cookies[i]);
-                }
-            }];
-          
-            WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-            [wkWebViewCookieStore getAllCookies:^(NSArray *cookies) {
-                NSLog(@"IAMTESTING didFinishNavigation websiteDataStore cookies");
-                NSLog(@"IAMTESTING %@", cookies);
-                for (int i=0; i < [cookies count]; i++) {
-                    NSLog(@"IAMTESTING %@", cookies[i]);
-                }
-            }];
-    #endif
-
     if (self.callbackId != nil) {
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
@@ -822,12 +744,9 @@ BOOL isExiting = FALSE;
     configuration.userContentController = userContentController;
 #if __has_include("CDVWKProcessPoolFactory.h")
     configuration.processPool = [[CDVWKProcessPoolFactory sharedFactory] sharedProcessPool];
-    NSLog(@"IAMTESTING got CDVWKProcessPoolFactory");
 #elif defined(__CORDOVA_6_0_0)
     configuration.processPool = [[CDVWebViewProcessPoolFactory sharedFactory] sharedProcessPool];
-    NSLog(@"IAMTESTING got CDVWebViewProcessPoolFactory");
 #endif
-    NSLog(@"IAMTESTING did I CDVWebViewProcessPoolFactory");
     [configuration.userContentController addScriptMessageHandler:self name:IAB_BRIDGE_NAME];
     
     //WKWebView options
@@ -1199,38 +1118,6 @@ BOOL isExiting = FALSE;
     } else {
         NSURL *request = [NSURLRequest requestWithURL:url];
         [self.webView loadRequest:request];
-    // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    //     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-    //     WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-    //     [cookieStore getAllCookies:^(NSArray* cookies) {
-    //         NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
-    //         NSMutableString *cookieString = [NSMutableString string];
-    //         for (int i=0; i < [cookies count]; i++) {
-    //             NSString *stringToAdd;
-    //             NSHTTPCookie *cookie = cookies[i];
-    //             NSLog(@"IAMTESTING %@=%@", [cookie name], [cookie value]);
-    //             if (i == 0) {
-    //                 stringToAdd = [NSString stringWithFormat:@"%@=%@", [cookie name], [cookie value]];
-    //             }
-    //             else {
-    //                 stringToAdd = [NSString stringWithFormat:@"; %@=%@", [cookie name], [cookie value]];
-    //             }
-    //             [cookieString appendString:stringToAdd];
-    //         }
-    //         [cookieString appendString:@";"];
-    //         NSLog(@"IAMTESTING cookieString is %@", cookieString);
-
-    //         NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-    //         NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
-    //         [request setValue:cookieString forHTTPHeaderField:@"Cookie"];
-    //         NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
-    //         NSDictionary *httpHeaders = [request allHTTPHeaderFields];
-    //         for (id header in httpHeaders) {
-    //             NSLog(@"IAMTESTING header=%@ value=%@", header, [httpHeaders objectForKey:header]);
-    //         }
-    //         [self.webView loadRequest:request];
-    //     }];
-    // #endif
     }
 }
 
@@ -1300,25 +1187,6 @@ BOOL isExiting = FALSE;
 
 #pragma mark WKNavigationDelegate
 
-- (void)webView:(WKWebView *)theWebView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
-    NSLog(@"IAMTESTING didReceiveServerRedirectForProvisionalNavigation");
-    NSLog(@"IAMTESTING %@", theWebView);
-    NSLog(@"IAMTESTING %@", [theWebView URL]);
-}
-
-// - (void)webView:(WKWebView *)webView
-// didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-// completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-//     NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
-//     NSLog(@"IAMTESTING challenge %@", challenge);
-//     NSLog(@"IAMTESTING challenge error %@", [challenge error]);
-//     NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
-//     // NSURLProtectionSpace *proteccSpace = [challenge protectionSpace];
-//     // NSLog(@"IAMTESTING challenge authenticationmethod %@", [proteccSpace authenticationMethod]);
-//     // NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
-//     completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-// }
-
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
     // loading url, start spinner, update back/forward
@@ -1351,22 +1219,6 @@ BOOL isExiting = FALSE;
 
 - (void)webView:(WKWebView *)theWebView didFinishNavigation:(WKNavigation *)navigation
 {
-    // NSLog(@"IAMTESTING didFinishNavigation");
-    // NSLog(@"IAMTESTING %@", self.currentURL);
-    // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    //         // Deletes all cookies
-    //         WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-    //         WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-    //         [cookieStore getAllCookies:^(NSArray* cookies) {
-    //             NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
-    //         }];
-          
-    //         WKHTTPCookieStore* wkWebViewCookieStore =[[[theWebView configuration] websiteDataStore] httpCookieStore];
-    //         [wkWebViewCookieStore getAllCookies:^(NSArray *wkcookies) {
-    //             NSLog(@"IAMTESTING website datastore cookies is %@", cookies);
-    //         }];
-    // #endif
-
     // update url, stop spinner, update back/forward
     
     self.addressLabel.text = [self.currentURL absoluteString];
