@@ -1197,38 +1197,40 @@ BOOL isExiting = FALSE;
     if ([url.scheme isEqualToString:@"file"]) {
         [self.webView loadFileURL:url allowingReadAccessToURL:url];
     } else {
-    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-        WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-        [cookieStore getAllCookies:^(NSArray* cookies) {
-            NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
-            NSMutableString *cookieString = [NSMutableString string];
-            for (int i=0; i < [cookies count]; i++) {
-                NSString *stringToAdd;
-                NSHTTPCookie *cookie = cookies[i];
-                NSLog(@"IAMTESTING %@=%@", [cookie name], [cookie value]);
-                if (i == 0) {
-                    stringToAdd = [NSString stringWithFormat:@"%@=%@", [cookie name], [cookie value]];
-                }
-                else {
-                    stringToAdd = [NSString stringWithFormat:@"; %@=%@", [cookie name], [cookie value]];
-                }
-                [cookieString appendString:stringToAdd];
-            }
-            [cookieString appendString:@";"];
-            NSLog(@"IAMTESTING cookieString is %@", cookieString);
+        NSURL *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
+    // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    //     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+    //     WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+    //     [cookieStore getAllCookies:^(NSArray* cookies) {
+    //         NSLog(@"IAMTESTING defaultdatastore cookies is %@", cookies);
+    //         NSMutableString *cookieString = [NSMutableString string];
+    //         for (int i=0; i < [cookies count]; i++) {
+    //             NSString *stringToAdd;
+    //             NSHTTPCookie *cookie = cookies[i];
+    //             NSLog(@"IAMTESTING %@=%@", [cookie name], [cookie value]);
+    //             if (i == 0) {
+    //                 stringToAdd = [NSString stringWithFormat:@"%@=%@", [cookie name], [cookie value]];
+    //             }
+    //             else {
+    //                 stringToAdd = [NSString stringWithFormat:@"; %@=%@", [cookie name], [cookie value]];
+    //             }
+    //             [cookieString appendString:stringToAdd];
+    //         }
+    //         [cookieString appendString:@";"];
+    //         NSLog(@"IAMTESTING cookieString is %@", cookieString);
 
-            NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-            NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
-            [request setValue:cookieString forHTTPHeaderField:@"Cookie"];
-            NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
-            NSDictionary *httpHeaders = [request allHTTPHeaderFields];
-            for (id header in httpHeaders) {
-                NSLog(@"IAMTESTING header=%@ value=%@", header, [httpHeaders objectForKey:header]);
-            }
-            [self.webView loadRequest:request];
-        }];
-    #endif
+    //         NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+    //         NSLog(@"IAMTESTING opening url %@", [url absoluteString]);
+    //         [request setValue:cookieString forHTTPHeaderField:@"Cookie"];
+    //         NSLog(@"IAMTESTING headers %@", [request allHTTPHeaderFields]);
+    //         NSDictionary *httpHeaders = [request allHTTPHeaderFields];
+    //         for (id header in httpHeaders) {
+    //             NSLog(@"IAMTESTING header=%@ value=%@", header, [httpHeaders objectForKey:header]);
+    //         }
+    //         [self.webView loadRequest:request];
+    //     }];
+    // #endif
     }
 }
 
@@ -1299,23 +1301,23 @@ BOOL isExiting = FALSE;
 #pragma mark WKNavigationDelegate
 
 - (void)webView:(WKWebView *)theWebView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
-    NSLog(@"didReceiveServerRedirectForProvisionalNavigation");
-    NSLog(@"%@", theWebView);
-    NSLog(@"%@", [theWebView URL]);
+    NSLog(@"IAMTESTING didReceiveServerRedirectForProvisionalNavigation");
+    NSLog(@"IAMTESTING %@", theWebView);
+    NSLog(@"IAMTESTING %@", [theWebView URL]);
 }
 
-- (void)webView:(WKWebView *)webView
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
-    NSLog(@"IAMTESTING challenge %@", challenge);
-    NSLog(@"IAMTESTING challenge error %@", [challenge error]);
-    NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
-    // NSURLProtectionSpace *proteccSpace = [challenge protectionSpace];
-    // NSLog(@"IAMTESTING challenge authenticationmethod %@", [proteccSpace authenticationMethod]);
-    // NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
-    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-}
+// - (void)webView:(WKWebView *)webView
+// didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+// completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+//     NSLog(@"IAMTESTING didReceiveAuthenticationChallenge");
+//     NSLog(@"IAMTESTING challenge %@", challenge);
+//     NSLog(@"IAMTESTING challenge error %@", [challenge error]);
+//     NSLog(@"IAMTESTING challenge protectionSpace %@", [challenge protectionSpace]);
+//     // NSURLProtectionSpace *proteccSpace = [challenge protectionSpace];
+//     // NSLog(@"IAMTESTING challenge authenticationmethod %@", [proteccSpace authenticationMethod]);
+//     // NSLog(@"IAMTESTING challenge sender %@", [challenge sender]);
+//     completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+// }
 
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
