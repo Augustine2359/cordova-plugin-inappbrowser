@@ -1162,6 +1162,21 @@ BOOL isExiting = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
 
+        NSLog(@"IAMTESTING dismiss with no animation");
+
+        [weakSelf dismissViewControllerAnimated:NO completion:^{
+                // NSLog(@"IAMTESTING %d", isExiting);
+                // NSLog(@"IAMTESTING self navigation delegate is %@", self.navigationDelegate);
+                if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+                    NSLog(@"navigation delegate will browser exit");
+                    [self.navigationDelegate browserExit];
+                    isExiting = FALSE;
+                    return;
+                }
+                NSLog(@"IAMTESTING navigation delegate did not browser exit");
+            }];
+return;
+
         // NSLog(@"IAMTESTING dismiss from navigationController");
         // [navigationController dismissViewControllerAnimated:YES completion:^{
         //     NSLog(@"IAMTESTING navigationController dismissViewControllerAnimatedComplete");
