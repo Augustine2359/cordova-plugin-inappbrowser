@@ -1144,23 +1144,40 @@ BOOL isExiting = FALSE;
         //     }
         // }];
         if ([weakSelf respondsToSelector:@selector(presentingViewController)]) {
-            NSLog(@"IAMTESTING I HAVE PRESENTINGVIEWCONTROLLER");
-            NSLog(@"IAMTESTING MY PRESENTER IS %@", [weakSelf presentingViewController]);
-            [[weakSelf presentingViewController] dismissViewControllerAnimated:YES completion:^{
-                NSLog(@"IAMTESTING dismissViewControllerAnimatedComplete");
-                NSLog(@"IAMTESTING %d", isExiting);
-                NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
-                // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
-                if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
-                    NSLog(@"IAMTESTING navigation delegate will browser exit");
-                    [weakNavigationDelegate browserExit];
-                    isExiting = FALSE;
-                //     return;
-                }
-                NSLog(@"IAMTESTING navigation delegate did not browser exit");
-            }];
-            if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
-                // [self.navigationDelegate browserExit];
+            NSLog(@"IAMTESTING I RESPOND TO PRESENTINGVIEWCONTROLLER");
+            if ([weakSelf presentingViewController]) {
+                NSLog(@"IAMTESTING MY PRESENTER IS %@", [weakSelf presentingViewController]);
+
+                [[weakSelf presentingViewController] dismissViewControllerAnimated:YES completion:^{
+                    NSLog(@"IAMTESTING presentingViewController dismissViewControllerAnimatedComplete");
+                    NSLog(@"IAMTESTING %d", isExiting);
+                    NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
+                    // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
+                    if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+                        NSLog(@"IAMTESTING navigation delegate will browser exit");
+                        [weakNavigationDelegate browserExit];
+                        isExiting = FALSE;
+                    //     return;
+                    }
+                    NSLog(@"IAMTESTING navigation delegate did not browser exit");
+                }];
+            }
+            else {
+                NSLog(@"IAMTESTING I HAVE NO PRESENTINGVIEWCONTROLLER");
+
+                [weakSelf dismissViewControllerAnimated:YES completion:^{
+                    NSLog(@"IAMTESTING dismissViewControllerAnimatedComplete");
+                    NSLog(@"IAMTESTING %d", isExiting);
+                    NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
+                    // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
+                    if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+                        NSLog(@"IAMTESTING navigation delegate will browser exit");
+                        [weakNavigationDelegate browserExit];
+                        isExiting = FALSE;
+                    //     return;
+                    }
+                    NSLog(@"IAMTESTING navigation delegate did not browser exit");
+                }];
             }
 
             NSLog(@"IAMTESTING Don't know if I dismissed");
