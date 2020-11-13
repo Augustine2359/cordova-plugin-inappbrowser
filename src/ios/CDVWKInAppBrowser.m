@@ -277,17 +277,23 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)show:(CDVInvokedUrlCommand*)command withNoAnimate:(BOOL)noAnimate
 {
+    NSLog(@"IAMTESTING SHOW WITH COMMAND");
+  NSLog(@"IAMTESTING %@", [command arguments]);
+  NSLog(@"IAMTESTING %@", [command callbackId]);
+  NSLog(@"IAMTESTING %@", [command className]);
+  NSLog(@"IAMTESTING %@", [command methodName]);
+
     BOOL initHidden = NO;
     if(command == nil && noAnimate == YES){
         initHidden = YES;
     }
     
     if (self.inAppBrowserViewController == nil) {
-        NSLog(@"Tried to show IAB after it was closed.");
+        NSLog(@"IAMTESTING Tried to show IAB after it was closed.");
         return;
     }
     if (_previousStatusBarStyle != -1) {
-        NSLog(@"Tried to show IAB while already shown");
+        NSLog(@"IAMTESTING Tried to show IAB while already shown");
         return;
     }
     
@@ -306,6 +312,8 @@ static CDVWKInAppBrowser* instance = nil;
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
         if (weakSelf.inAppBrowserViewController != nil) {
+            NSLog(@"IAMTESTING weakSelf got inAppBrowserViewController");
+
             float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
             __strong __typeof(weakSelf) strongSelf = weakSelf;
             if (!strongSelf->tmpWindow) {
@@ -325,6 +333,9 @@ static CDVWKInAppBrowser* instance = nil;
                 [self->tmpWindow makeKeyAndVisible];
             }
             [tmpController presentViewController:nav animated:!noAnimate completion:nil];
+        }
+        else {
+            NSLog(@"IAMTESTING weakSelf got no inAppBrowserViewController");
         }
     });
 }
