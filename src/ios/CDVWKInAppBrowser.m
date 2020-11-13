@@ -1137,6 +1137,12 @@ BOOL isExiting = FALSE;
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
+        // [weakSelf dismissViewControllerAnimated:YES completion:^{
+        //     if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+        //         [weakNavigationDelegate browserExit];
+        //         isExiting = FALSE;
+        //     }
+        // }];
         if ([weakSelf respondsToSelector:@selector(presentingViewController)]) {
             NSLog(@"IAMTESTING I HAVE PRESENTINGVIEWCONTROLLER");
             NSLog(@"IAMTESTING MY PRESENTER IS %@", [weakSelf presentingViewController]);
@@ -1146,17 +1152,18 @@ BOOL isExiting = FALSE;
                 NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
                 // NSLog(@"IAMTESTING self navigation delegate is %@", weakNavigationDelegate);
                 if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
-                //     NSLog(@"IAMTESTING navigation delegate will browser exit");
+                    NSLog(@"IAMTESTING navigation delegate will browser exit");
                     [weakNavigationDelegate browserExit];
                     isExiting = FALSE;
                 //     return;
                 }
-                // NSLog(@"IAMTESTING navigation delegate did not browser exit");
+                NSLog(@"IAMTESTING navigation delegate did not browser exit");
             }];
             if ((self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
                 // [self.navigationDelegate browserExit];
             }
-                // NSLog(@"IAMTESTING Don't know if I dismissed");
+
+            NSLog(@"IAMTESTING Don't know if I dismissed");
         } else {
             NSLog(@"IAMTESTING I NO PRESENTINGVIEWCONTROLLER BUT HAVE PARENTVIEWCONTROLLER");
 
