@@ -1133,10 +1133,10 @@ BOOL isExiting = FALSE;
 
     __weak CDVWKInAppBrowserViewController* weakSelf = self;
     __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
-    UIWindow *window = weakNavigationDelegate.tmpWindow;
-    __weak UIViewController *tmpController = window.rootViewController;
+    UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
+    __weak UIViewController *tmpController = keyWindow.rootViewController;
     __weak UINavigationController *navigationController = self.navigationController;
-    NSLog(@"IAMTESTING window is %@", window);
+    NSLog(@"IAMTESTING keyWindow is %@", keyWindow);
     NSLog(@"IAMTESTING tmpController is %@", tmpController);
     NSLog(@"IAMTESTING navigationController is %@", navigationController);
 
