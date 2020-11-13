@@ -1133,10 +1133,55 @@ BOOL isExiting = FALSE;
 
     __weak CDVWKInAppBrowserViewController* weakSelf = self;
     __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
+    UIWindow *window = weakNavigationDelegate.tmpWindow;
+    __weak UIViewController *tmpController = window.rootViewController;
+    __weak UINavigationController *navigationController = self.navigationController;
+    NSLog(@"IAMTESTING window is %@", window);
+    NSLog(@"IAMTESTING tmpController is %@", tmpController);
+    NSLog(@"IAMTESTING navigationController is %@", navigationController);
+
+    UIViewController *navigationPresenter = [navigationController presentingViewController];
+    UIViewController *navigationParent = [navigationController parentViewController];
+    NSLog(@"IAMTESTING navigationPresenter is %@", navigationPresenter);
+    NSLog(@"IAMTESTING navigationParent is %@", navigationParent);
 
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
+
+        NSLog(@"IAMTESTING dismiss from navigationController");
+        [navigationController dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"IAMTESTING navigationController dismissViewControllerAnimatedComplete");
+            NSLog(@"IAMTESTING %d", isExiting);
+            NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
+
+            if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+                NSLog(@"IAMTESTING navigation delegate will browser exit");
+                [weakNavigationDelegate browserExit];
+                isExiting = FALSE;
+                return;
+            }
+
+            NSLog(@"IAMTESTING navigation delegate did not browser exit");
+        }];
+
+        // NSLog(@"IAMTESTING dismiss from tmpController");
+        // [tmpController dismissViewControllerAnimated:YES completion:^{
+        //     NSLog(@"IAMTESTING tmpController dismissViewControllerAnimatedComplete");
+        //     NSLog(@"IAMTESTING %d", isExiting);
+        //     NSLog(@"IAMTESTING weakself navigation delegate is %@", weakSelf.navigationDelegate);
+
+        //     if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
+        //         NSLog(@"IAMTESTING navigation delegate will browser exit");
+        //         [weakNavigationDelegate browserExit];
+        //         isExiting = FALSE;
+        //         return;
+        //     }
+
+        //     NSLog(@"IAMTESTING navigation delegate did not browser exit");
+        // }];
+        return;
+
         // [weakSelf dismissViewControllerAnimated:YES completion:^{
         //     if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
         //         [weakNavigationDelegate browserExit];
