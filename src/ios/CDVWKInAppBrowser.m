@@ -1144,6 +1144,7 @@ BOOL isExiting = FALSE;
     // }
 
     __weak CDVWKInAppBrowserViewController* weakSelf = self;
+    CDVWKInAppBrowserViewController* notWeakSelf = self;
     __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
     UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
     __weak UIViewController *tmpController = keyWindow.rootViewController;
@@ -1162,19 +1163,22 @@ BOOL isExiting = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
 
-        NSLog(@"IAMTESTING dismiss with no animation");
+        NSLog(@"IAMTESTING dismiss with not weak");
+        NSLog(@"IAMTESTING does weakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
+        NSLog(@"IAMTESTING does notWeakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
 
-        [weakSelf dismissViewControllerAnimated:NO completion:^{
+        [notWeakSelf dismissViewControllerAnimated:YES completion:^{
                 // NSLog(@"IAMTESTING %d", isExiting);
                 // NSLog(@"IAMTESTING self navigation delegate is %@", self.navigationDelegate);
                 if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
-                    NSLog(@"navigation delegate will browser exit");
+                    NSLog(@"IAMTESTING navigation delegate will browser exit");
                     [self.navigationDelegate browserExit];
                     isExiting = FALSE;
                     return;
                 }
                 NSLog(@"IAMTESTING navigation delegate did not browser exit");
             }];
+
 return;
 
         // NSLog(@"IAMTESTING dismiss from navigationController");
