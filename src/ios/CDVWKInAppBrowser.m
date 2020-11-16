@@ -265,10 +265,28 @@ static CDVWKInAppBrowser* instance = nil;
     }
     _waitForBeforeload = ![_beforeload isEqualToString:@""];
     
+    NSLog(@"IAMTESTING openInInAppBrowser:withOptions before navigateTo");
     [self.inAppBrowserViewController navigateTo:url];
     if (!browserOptions.hidden) {
+        NSLog(@"IAMTESTING not hidden");
         [self show:nil withNoAnimate:browserOptions.hidden];
     }
+    else {
+        NSLog(@"IAMTESTING hidden");
+    }
+
+    UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
+    __weak UIViewController *tmpController = keyWindow.rootViewController;
+    __weak UINavigationController *navigationController = [self.inAppBrowserViewController navigationController];
+    NSLog(@"IAMTESTING keyWindow is %@", keyWindow);
+    NSLog(@"IAMTESTING tmpController is %@", tmpController);
+    NSLog(@"IAMTESTING tmpController presentedViewController is %@", [tmpController presentedViewController]);
+    NSLog(@"IAMTESTING navigationController is %@", navigationController);
+
+    UIViewController *navigationPresenter = [navigationController presentingViewController];
+    UIViewController *navigationParent = [navigationController parentViewController];
+    NSLog(@"IAMTESTING navigationPresenter is %@", navigationPresenter);
+    NSLog(@"IAMTESTING navigationParent is %@", navigationParent);
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command{
