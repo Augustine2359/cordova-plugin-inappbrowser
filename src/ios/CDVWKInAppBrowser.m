@@ -684,6 +684,45 @@ static CDVWKInAppBrowser* instance = nil;
 {
         NSLog(@"IAMTESTING BROWSER EXIT");
 
+        [self.inAppBrowserViewController dismissViewControllerAnimated:YES completion:^{
+            
+    if (self.callbackId != nil) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsDictionary:@{@"type":@"exit"}];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        self.callbackId = nil;
+    }
+    
+    [self.inAppBrowserViewController.configuration.userContentController removeScriptMessageHandlerForName:IAB_BRIDGE_NAME];
+    self.inAppBrowserViewController.configuration = nil;
+    
+    [self.inAppBrowserViewController.webView stopLoading];
+    [self.inAppBrowserViewController.webView removeFromSuperview];
+    [self.inAppBrowserViewController.webView setUIDelegate:nil];
+    [self.inAppBrowserViewController.webView setNavigationDelegate:nil];
+    self.inAppBrowserViewController.webView = nil;
+    
+    // Set navigationDelegate to nil to ensure no callbacks are received from it.
+    self.inAppBrowserViewController.navigationDelegate = nil;
+    self.inAppBrowserViewController = nil;
+
+    // Set tmpWindow to hidden to make main webview responsive to touch again
+    // Based on https://stackoverflow.com/questions/4544489/how-to-remove-a-uiwindow
+    self->tmpWindow.hidden = YES;
+    self->tmpWindow = nil;
+
+    if (IsAtLeastiOSVersion(@"7.0")) {
+        if (_previousStatusBarStyle != -1) {
+            [[UIApplication sharedApplication] setStatusBarStyle:_previousStatusBarStyle];
+            
+        }
+    }
+    
+    _previousStatusBarStyle = -1; // this value was reset before reapplying it. caused statusbar to stay black on ios7
+            }];
+
+return;
+
     if (self.callbackId != nil) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                       messageAsDictionary:@{@"type":@"exit"}];
@@ -1166,6 +1205,16 @@ BOOL isExiting = FALSE;
         NSLog(@"IAMTESTING dismiss with not weak");
         NSLog(@"IAMTESTING does weakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
         NSLog(@"IAMTESTING does notWeakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
+
+                if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+                    NSLog(@"IAMTESTING navigation delegate will browser exit");
+                    [self.navigationDelegate browserExit];
+                    // isExiting = FALSE;
+                    return;
+                }
+                NSLog(@"IAMTESTING navigation delegate did not browser exit");
+
+return;
 
         [notWeakSelf dismissViewControllerAnimated:YES completion:^{
                 // NSLog(@"IAMTESTING %d", isExiting);
