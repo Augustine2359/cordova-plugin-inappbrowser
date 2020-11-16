@@ -1220,6 +1220,9 @@ BOOL isExiting = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
 
+        NSLog(@"IAMTESTING weakSelf viewLoaded %@", [weakSelf viewLoaded]);
+        NSLog(@"IAMTESTING weakSelf window %@", [weakSelf.view window]);
+
         NSLog(@"IAMTESTING dismiss with not weak");
         NSLog(@"IAMTESTING does weakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
         NSLog(@"IAMTESTING does notWeakSelf respondTo dismissViewControllerAnimated %d", [weakSelf respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]);
