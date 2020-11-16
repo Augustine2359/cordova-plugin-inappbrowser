@@ -1068,6 +1068,11 @@ BOOL isExiting = FALSE;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self navigationDelegateBrowserExit];
+}
+
+- (void)navigationDelegateBrowserExit
+{
     if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
         [self.navigationDelegate browserExit];
         isExiting = FALSE;
@@ -1097,16 +1102,21 @@ BOOL isExiting = FALSE;
     self.currentURL = nil;
 
     __weak CDVWKInAppBrowserViewController* weakSelf = self;
-    __weak CDVWKInAppBrowser* weakNavigationDelegate = self.navigationDelegate;
 
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
+        BOOL isViewOnScreen = [weakSelf isViewLoaded] && [weakSelf.view window];
+
+        // iOS 12 and below dismissViewControllerAnimated:completion: does not seem to enter completion block if the viewController's view is not onscreen
+        // This will allow the browserExit function to be called in such a case
+        if (isViewOnScreen == NO) {
+            [weakSelf navigationDelegateBrowserExit];
+            return;
+        }
+
         [weakSelf dismissViewControllerAnimated:YES completion:^{
-            if (isExiting && (weakNavigationDelegate != nil) && [weakNavigationDelegate respondsToSelector:@selector(browserExit)]) {
-                [weakNavigationDelegate browserExit];
-                isExiting = FALSE;
-            }
+            [weakSelf navigationDelegateBrowserExit];
         }];
     });
 }
