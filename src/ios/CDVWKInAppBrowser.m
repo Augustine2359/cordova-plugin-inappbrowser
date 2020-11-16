@@ -1220,7 +1220,7 @@ BOOL isExiting = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
 
-        NSLog(@"IAMTESTING weakSelf viewLoaded %@", [weakSelf viewLoaded]);
+        NSLog(@"IAMTESTING weakSelf viewLoaded %d", [weakSelf isViewLoaded]);
         NSLog(@"IAMTESTING weakSelf window %@", [weakSelf.view window]);
 
         NSLog(@"IAMTESTING dismiss with not weak");
