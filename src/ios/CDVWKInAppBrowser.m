@@ -1115,8 +1115,6 @@ BOOL isExiting = FALSE;
             }
         #endif
 
-        NSLog(@"IAMTESTING %d", isAtLeastiOS13);
-
         // iOS 12 and below dismissViewControllerAnimated:completion: does not seem to enter completion block if the viewController's view is not onscreen
         // This will allow the browserExit function to be called in such a case
         if (isViewOnScreen == NO && isAtLeastiOS13 == NO) {
