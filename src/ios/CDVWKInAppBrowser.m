@@ -1107,10 +1107,19 @@ BOOL isExiting = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         isExiting = TRUE;
         BOOL isViewOnScreen = [weakSelf isViewLoaded] && [weakSelf.view window];
+        BOOL isAtLeastiOS13 = NO;
+
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+            if (@available(iOS 13.0, *)) {
+                isAtLeastiOS13 = YES;
+            }
+        #endif
+
+        NSLog(@"IAMTESTING %d", isAtLeastiOS13);
 
         // iOS 12 and below dismissViewControllerAnimated:completion: does not seem to enter completion block if the viewController's view is not onscreen
         // This will allow the browserExit function to be called in such a case
-        if (isViewOnScreen == NO) {
+        if (isViewOnScreen == NO && isAtLeastiOS13 == NO) {
             [weakSelf navigationDelegateBrowserExit];
             return;
         }
