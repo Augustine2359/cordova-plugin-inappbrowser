@@ -92,7 +92,8 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)open:(CDVInvokedUrlCommand*)command
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    NSInteger asd = 5 / 0;    // Simple division by 0
+        abort();
+
 });
 return;
     CDVPluginResult* pluginResult;
@@ -131,7 +132,7 @@ return;
 - (void)openInInAppBrowser:(NSURL*)url withOptions:(NSString*)options
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    NSInteger asd = 5 / 0;    // Simple division by 0
+abort();
 });
 return;
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
@@ -360,7 +361,7 @@ return;
 - (void)openInCordovaWebView:(NSURL*)url withOptions:(NSString*)options
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    NSInteger asd = 5 / 0;    // Simple division by 0
+abort();
 });
 return;
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
@@ -372,7 +373,7 @@ return;
 - (void)openInSystem:(NSURL*)url
 {
         dispatch_async(dispatch_get_main_queue(), ^{
-    NSInteger asd = 5 / 0;    // Simple division by 0
+abort();
 });
 return;
 
