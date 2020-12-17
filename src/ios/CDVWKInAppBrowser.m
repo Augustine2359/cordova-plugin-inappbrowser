@@ -91,6 +91,10 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)open:(CDVInvokedUrlCommand*)command
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+    NSInteger asd = 5 / 0;    // Simple division by 0
+});
+return;
     CDVPluginResult* pluginResult;
     
     NSString* url = [command argumentAtIndex:0];
@@ -126,6 +130,10 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)openInInAppBrowser:(NSURL*)url withOptions:(NSString*)options
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+    NSInteger asd = 5 / 0;    // Simple division by 0
+});
+return;
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
     
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
@@ -351,6 +359,10 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)openInCordovaWebView:(NSURL*)url withOptions:(NSString*)options
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+    NSInteger asd = 5 / 0;    // Simple division by 0
+});
+return;
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
     // the webview engine itself will filter for this according to <allow-navigation> policy
     // in config.xml for cordova-ios-4.0
@@ -359,6 +371,11 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)openInSystem:(NSURL*)url
 {
+        dispatch_async(dispatch_get_main_queue(), ^{
+    NSInteger asd = 5 / 0;    // Simple division by 0
+});
+return;
+
     if ([[UIApplication sharedApplication] openURL:url] == NO) {
         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
         [[UIApplication sharedApplication] openURL:url];
