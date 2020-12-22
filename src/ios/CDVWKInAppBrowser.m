@@ -1204,6 +1204,13 @@ BOOL isExiting = FALSE;
 
 #pragma mark WKNavigationDelegate
 
+- (void)webView:(WKWebView *)webView 
+didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge 
+completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+    NSURLCredential * credential = [[NSURLCredential alloc] initWithTrust:[challenge protectionSpace].serverTrust];
+    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+}
+
 - (void)webView:(WKWebView *)theWebView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
     // loading url, start spinner, update back/forward
