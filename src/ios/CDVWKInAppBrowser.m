@@ -390,7 +390,7 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)logProgressWithMessage:(NSString *)message
 {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                  messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"specialMessage": message, @"specialID": [NSNumber numberWithInt: 7618]}];
+                                                  messageAsDictionary:@{@"type":@"loadstop", @"specialMessage": message, @"specialID": [NSNumber numberWithInt: 7618]}];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
