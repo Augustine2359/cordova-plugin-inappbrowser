@@ -627,11 +627,17 @@ static CDVWKInAppBrowser* instance = nil;
                 url = @"";
             }
         }
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                      messageAsDictionary:@{@"type":@"loadstop", @"url":url}];
-        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
         
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"cookies": cookies, @"specialID": [NSNumber numberWithInt: 7618]}];
+                [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+            }];
+        #endif
     }
 }
 
@@ -646,11 +652,16 @@ static CDVWKInAppBrowser* instance = nil;
                 url = @"";
             }
         }
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                      messageAsDictionary:@{@"type":@"loaderror", @"url":url, @"code": [NSNumber numberWithInteger:error.code], @"message": error.localizedDescription}];
-        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-        
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"code": [NSNumber numberWithInteger:error.code], @"message": error.localizedDescription, @"cookies": cookies, @"specialID": [NSNumber numberWithInt: 7618]}];
+                [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+            }];
+        #endif
     }
 }
 
