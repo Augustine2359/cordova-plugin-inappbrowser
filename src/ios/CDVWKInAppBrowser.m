@@ -387,6 +387,14 @@ static CDVWKInAppBrowser* instance = nil;
     [self.inAppBrowserViewController navigateTo:url];
 }
 
+- (void)logProgressWithMessage:(NSString *)message
+{
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"specialMessage": message, @"specialID": [NSNumber numberWithInt: 7618]}];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+}
+
 // This is a helper method for the inject{Script|Style}{Code|File} API calls, which
 // provides a consistent method for injecting JavaScript code into the document.
 //
@@ -1084,8 +1092,18 @@ BOOL isExiting = FALSE;
 
 - (void)navigationDelegateBrowserExit
 {
+    [self.navigationDelegate logProgressWithMessage:@"navigationDelegateBrowserExit"];
+    if (isExiting) {
+        [self.navigationDelegate logProgressWithMessage:@"isExiting true"];
+    }
+    else {
+        [self.navigationDelegate logProgressWithMessage:@"isExiting false"];
+    }
+
     if (isExiting && (self.navigationDelegate != nil) && [self.navigationDelegate respondsToSelector:@selector(browserExit)]) {
+        [self.navigationDelegate logProgressWithMessage:@"will browserExit"];
         [self.navigationDelegate browserExit];
+        [self.navigationDelegate logProgressWithMessage:@"did browserExit"];
         isExiting = FALSE;
     }
 }
@@ -1114,11 +1132,20 @@ BOOL isExiting = FALSE;
 
     __weak CDVWKInAppBrowserViewController* weakSelf = self;
 
+    [self.navigationDelegate logProgressWithMessage:@"before dispatch_get_main_queue"];
+
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf.navigationDelegate logProgressWithMessage:@"in dispatch_get_main_queue"];
         isExiting = TRUE;
         BOOL isViewOnScreen = [weakSelf isViewLoaded] && [weakSelf.view window];
         BOOL isAtLeastiOS13 = NO;
+        if (isViewOnScreen) {
+            [weakSelf.navigationDelegate logProgressWithMessage:@"isViewOnScreen true"];
+        }
+        else {
+            [weakSelf.navigationDelegate logProgressWithMessage:@"isViewOnScreen false"];
+        }
 
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
             if (@available(iOS 13.0, *)) {
@@ -1126,14 +1153,24 @@ BOOL isExiting = FALSE;
             }
         #endif
 
+        if (isAtLeastiOS13) {
+            [weakSelf.navigationDelegate logProgressWithMessage:@"isAtLeastiOS13 true"];
+        }
+        else {
+            [weakSelf.navigationDelegate logProgressWithMessage:@"isAtLeastiOS13 false"];
+        }
+
         // iOS 12 and below dismissViewControllerAnimated:completion: does not seem to enter completion block if the viewController's view is not onscreen
         // This will allow the browserExit function to be called in such a case
         if (isViewOnScreen == NO && isAtLeastiOS13 == NO) {
+            [weakSelf logProgressWithMessage:@"isViewOnScreen false isAtLeastiOS13 false, will navigationDelegateBrowserExit"];
             [weakSelf navigationDelegateBrowserExit];
             return;
         }
 
+        [weakSelf logProgressWithMessage:@"will dismissViewControllerAnimated"];
         [weakSelf dismissViewControllerAnimated:YES completion:^{
+            [weakSelf logProgressWithMessage:@"dismissViewControllerAnimated completion"];
             [weakSelf navigationDelegateBrowserExit];
         }];
     });
