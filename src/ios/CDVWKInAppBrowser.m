@@ -638,6 +638,11 @@ static CDVWKInAppBrowser* instance = nil;
         }
         
         NSString *callbackIdToSend = self.callbackId;
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                messageAsDictionary:@{@"type":@"loadstop", @"url":url}];
+        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
+        return;
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
@@ -676,6 +681,12 @@ static CDVWKInAppBrowser* instance = nil;
         }
 
         NSString *callbackIdToSend = self.callbackId;
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+        messageAsDictionary:@{@"type":@"loaderror", @"url":url, @"code": [NSNumber numberWithInteger:error.code], @"message": error.localizedDescription}];
+        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
+        return;
+
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
