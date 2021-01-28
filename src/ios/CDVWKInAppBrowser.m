@@ -389,6 +389,7 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)logProgressWithMessage:(NSString *)message
 {
+    return;
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT
                                                   messageAsDictionary:@{@"type":@"loadstop", @"specialMessage": message, @"specialID": [NSNumber numberWithInt: 7618]}];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -636,6 +637,7 @@ static CDVWKInAppBrowser* instance = nil;
             }
         }
         
+        NSString *callbackIdToSend = self.callbackId;
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
@@ -655,7 +657,7 @@ static CDVWKInAppBrowser* instance = nil;
                 CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                               messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"cookies": cookieString, @"specialID": [NSNumber numberWithInt: 7618]}];
                 [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-                [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
             }];
         #endif
     }
@@ -672,6 +674,8 @@ static CDVWKInAppBrowser* instance = nil;
                 url = @"";
             }
         }
+
+        NSString *callbackIdToSend = self.callbackId;
         #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
             WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
@@ -691,7 +695,7 @@ static CDVWKInAppBrowser* instance = nil;
                 CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                                               messageAsDictionary:@{@"type":@"loaderror", @"url":url, @"code": [NSNumber numberWithInteger:error.code], @"message": error.localizedDescription, @"cookies": cookieString, @"specialID": [NSNumber numberWithInt: 7618]}];
                 [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-                [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
             }];
         #endif
     }
