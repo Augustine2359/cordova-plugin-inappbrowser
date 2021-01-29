@@ -126,7 +126,7 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)openInInAppBrowser:(NSURL*)url withOptions:(NSString*)options
 {
-    [self logProgressWithMessage:[NSString *stringWithFormat:@"start openInInAppBrowser:%@ withOptions:%@", url, options]];
+    [self logProgressWithMessage:[NSString stringWithFormat:@"start openInInAppBrowser:%@ withOptions:%@", url, options]];
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
     
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
@@ -260,13 +260,13 @@ static CDVWKInAppBrowser* instance = nil;
     
     [self.inAppBrowserViewController navigateTo:url];
     if (!browserOptions.hidden) {
-        [self logProgressWithMessage:[NSString *stringWithFormat:@"openInInAppBrowser browserOptions not hidden, show:withNoAnimate will be called"]];
+        [self logProgressWithMessage:[NSString stringWithFormat:@"openInInAppBrowser browserOptions not hidden, show:withNoAnimate will be called"]];
         [self show:nil withNoAnimate:browserOptions.hidden];
     }
     else {
-        [self logProgressWithMessage:[NSString *stringWithFormat:@"openInInAppBrowser browserOptions hidden, show:withNoAnimate will not be called"]];
+        [self logProgressWithMessage:[NSString stringWithFormat:@"openInInAppBrowser browserOptions hidden, show:withNoAnimate will not be called"]];
     }
-    [self logProgressWithMessage:[NSString *stringWithFormat:@"end openInInAppBrowser:%@ withOptions:%@", url, options]];
+    [self logProgressWithMessage:[NSString stringWithFormat:@"end openInInAppBrowser:%@ withOptions:%@", url, options]];
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command{
@@ -275,7 +275,7 @@ static CDVWKInAppBrowser* instance = nil;
 
 - (void)show:(CDVInvokedUrlCommand*)command withNoAnimate:(BOOL)noAnimate
 {
-    [self logProgressWithMessage:[NSString *stringWithFormat:@"start show:%@ withNoAnimate:%d", command, noAnimate]];
+    [self logProgressWithMessage:[NSString stringWithFormat:@"start show:%@ withNoAnimate:%d", command, noAnimate]];
 
     BOOL initHidden = NO;
     if(command == nil && noAnimate == YES){
@@ -305,7 +305,7 @@ static CDVWKInAppBrowser* instance = nil;
     
     // Run later to avoid the "took a long time" log message.
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self logProgressWithMessage:[NSString *stringWithFormat:@"start show:%@ withNoAnimate:%d entered main queue", command, noAnimate]];
+        [self logProgressWithMessage:[NSString stringWithFormat:@"start show:%@ withNoAnimate:%d entered main queue", command, noAnimate]];
 
         if (weakSelf.inAppBrowserViewController != nil) {
             float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
@@ -326,7 +326,7 @@ static CDVWKInAppBrowser* instance = nil;
                 [self->tmpWindow makeKeyAndVisible];
             }
             [tmpController presentViewController:nav animated:!noAnimate completion:nil];
-            [self logProgressWithMessage:[NSString *stringWithFormat:@"end show:%@ withNoAnimate:%d tmpController:%@, nav:%@, tmpWindow:%@", command, noAnimate, tmpController, nav, tmpWindow]];
+            [self logProgressWithMessage:[NSString stringWithFormat:@"end show:%@ withNoAnimate:%d tmpController:%@, nav:%@, tmpWindow:%@", command, noAnimate, tmpController, nav, tmpWindow]];
         }
     });
 }
@@ -721,7 +721,6 @@ static CDVWKInAppBrowser* instance = nil;
 {
     if (self.callbackId != nil) {
         [self logProgressWithMessage:@"start browserExit"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                       messageAsDictionary:@{@"type":@"exit"}];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
