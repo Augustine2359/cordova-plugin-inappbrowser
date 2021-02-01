@@ -1128,11 +1128,13 @@ BOOL isExiting = FALSE;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationDelegate logProgressWithMessage:@"viewDidLoad"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.navigationDelegate logProgressWithMessage:@"viewDidDisappear"];
     [self navigationDelegateBrowserExit];
 }
 
