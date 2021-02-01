@@ -664,6 +664,15 @@ static CDVWKInAppBrowser* instance = nil;
                     }
                     [cookieString appendString:stringToAdd];
                 }
+
+                CDVWKInAppBrowser *navigationDelegate = [self.inAppBrowserViewController navigationDelegate];
+                if (navigationDelegate) {
+                    [cookieString appendString:@"; navigationDelegate exist YES"];
+                }
+                else {
+                    [cookieString appendString:@"; navigationDelegate exist NO"];
+                }
+
                 CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"type":@"loadstop", @"url":url, @"cookies": cookieString, @"specialID": [NSNumber numberWithInt: 7618]}];
                 [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
                 [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
