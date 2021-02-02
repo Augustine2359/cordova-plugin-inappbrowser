@@ -638,7 +638,7 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
     if (self.callbackId != nil) {
-        [self logProgressWithMessage:[NSString stringWithFormat:@"didFinishNavigation callbackID is %@", self.callbackIdToSend]];
+        [self logProgressWithMessage:[NSString stringWithFormat:@"didFinishNavigation callbackID is %@", self.callbackId]];
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
             if(self.inAppBrowserViewController.currentURL != nil){
@@ -691,7 +691,7 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)webView:(WKWebView*)theWebView didFailNavigation:(NSError*)error
 {
     if (self.callbackId != nil) {
-        [self logProgressWithMessage:[NSString stringWithFormat:@"didFailNavigation callbackID is %@", self.callbackIdToSend]];
+        [self logProgressWithMessage:[NSString stringWithFormat:@"didFailNavigation callbackID is %@", self.callbackId]];
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
             if(self.inAppBrowserViewController.currentURL != nil){
