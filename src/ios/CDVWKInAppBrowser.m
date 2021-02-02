@@ -638,6 +638,7 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)didFinishNavigation:(WKWebView*)theWebView
 {
     if (self.callbackId != nil) {
+        [self logProgressWithMessage:[NSString stringWithFormat:@"didFinishNavigation callbackID is %@", self.callbackIdToSend]];
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
             if(self.inAppBrowserViewController.currentURL != nil){
@@ -682,12 +683,15 @@ static CDVWKInAppBrowser* instance = nil;
         [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
             }];
         #endif
+    } else {
+        [self logProgressWithMessage:@"didFinishNavigation no callbackId"];
     }
 }
 
 - (void)webView:(WKWebView*)theWebView didFailNavigation:(NSError*)error
 {
     if (self.callbackId != nil) {
+        [self logProgressWithMessage:[NSString stringWithFormat:@"didFailNavigation callbackID is %@", self.callbackIdToSend]];
         NSString* url = [theWebView.URL absoluteString];
         if(url == nil){
             if(self.inAppBrowserViewController.currentURL != nil){
@@ -723,6 +727,8 @@ static CDVWKInAppBrowser* instance = nil;
                 [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdToSend];
             }];
         #endif
+    } else {
+        [self logProgressWithMessage:@"didFailNavigation no callbackId"];
     }
 }
 
